@@ -21,6 +21,7 @@ interface RewardedAdSystemProps {
 // Ad configuration
 const AD_CONFIG = {
   android: {
+<<<<<<< HEAD
     rewardedAdUnitId: process.env.NODE_ENV === 'development' 
       ? 'ca-app-pub-3940256099942544/5224354917' 
       : import.meta.env.VITE_ADMOB_REWARDED_AD_UNIT_ID || 'ca-app-pub-3940256099942544/5224354917',
@@ -28,6 +29,15 @@ const AD_CONFIG = {
   web: {
     adUnitId: process.env.NODE_ENV === 'development' 
       ? 'test-ad-unit' 
+=======
+    rewardedAdUnitId: process.env.NODE_ENV === 'development'
+      ? 'ca-app-pub-3940256099942544/5224354917'
+      : import.meta.env.VITE_ADMOB_REWARDED_AD_UNIT_ID || 'ca-app-pub-3940256099942544/5224354917',
+  },
+  web: {
+    adUnitId: process.env.NODE_ENV === 'development'
+      ? 'test-ad-unit'
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       : import.meta.env.VITE_WEB_AD_UNIT_ID || 'YOUR_WEB_AD_UNIT_ID',
   },
   cooldownMinutes: 15,
@@ -51,7 +61,11 @@ export function RewardedAdSystem({ onRewardGranted, className }: RewardedAdSyste
   const [cooldownRemaining, setCooldownRemaining] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const isMobile = useIsMobile();
+<<<<<<< HEAD
   const adInstanceRef = useRef<any>(null);
+=======
+  const adInstanceRef = useRef<AdMobRewardedAd | null>(null);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   const watchStartTimeRef = useRef<number | null>(null);
 
   // Sync limits with persistence
@@ -61,7 +75,11 @@ export function RewardedAdSystem({ onRewardGranted, className }: RewardedAdSyste
       const lastWatchTime = parseInt(localStorage.getItem('lastAdWatchTime') || '0');
       const todayDate = new Date().toDateString();
       const lastWatchDate = new Date(lastWatchTime).toDateString();
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       let count = parseInt(localStorage.getItem('todayAdWatchCount') || '0');
       if (lastWatchDate !== todayDate) {
         count = 0;
@@ -90,8 +108,13 @@ export function RewardedAdSystem({ onRewardGranted, className }: RewardedAdSyste
       }
 
       try {
+<<<<<<< HEAD
         if ((window as any).admob) {
           const admob = (window as any).admob;
+=======
+        if (window.admob) {
+          const admob = window.admob;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           await admob.start();
           adInstanceRef.current = admob.RewardedAd;
           await adInstanceRef.current.load({
@@ -143,7 +166,11 @@ export function RewardedAdSystem({ onRewardGranted, className }: RewardedAdSyste
     // Abuse prevention: Check if enough time actually passed
     const now = Date.now();
     const elapsed = watchStartTimeRef.current ? (now - watchStartTimeRef.current) / 1000 : 0;
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     if (elapsed < AD_CONFIG.adDurationSeconds - 2) {
       setAdState('error');
       setError('Security validation failed');
@@ -155,7 +182,11 @@ export function RewardedAdSystem({ onRewardGranted, className }: RewardedAdSyste
     const newCount = dailyWatchCount + 1;
     localStorage.setItem('todayAdWatchCount', newCount.toString());
     setDailyWatchCount(newCount);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     onRewardGranted(selectedReward);
     adAnalytics.trackAdCompleted(selectedReward.type);
 
@@ -351,27 +382,47 @@ export function RewardedAdSystem({ onRewardGranted, className }: RewardedAdSyste
 }
 
 // Analytics tracking
+<<<<<<< HEAD
 export const adAnalytics = {
+=======
+const adAnalytics = {
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   trackAdLoaded: () => {
     console.log('Ad loaded');
     // Send to analytics service
   },
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   trackAdShown: (rewardType: string) => {
     console.log('Ad shown for reward:', rewardType);
     // Send to analytics service
   },
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   trackAdCompleted: (rewardType: string) => {
     console.log('Ad completed for reward:', rewardType);
     // Send to analytics service
   },
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   trackAdFailed: (error: string) => {
     console.log('Ad failed:', error);
     // Send to analytics service
   },
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   trackDailyWatchCount: (count: number) => {
     console.log('Daily ad watch count:', count);
     // Send to analytics service

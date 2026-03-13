@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useRef, useEffect, useState } from 'react';
+=======
+import { useRef, useEffect, useState, useCallback } from 'react';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -14,6 +18,19 @@ interface PremiumChatLayoutProps {
   className?: string;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * PremiumChatLayout — Production-Grade Chat Shell
+ *
+ * Key features:
+ * - Rock-solid keyboard handling via VisualViewport API
+ * - Input stays visible and fixed when keyboard opens
+ * - Messages adjust smoothly above keyboard (no jumping/glitching)
+ * - CSS containment for performance
+ * - Proper safe-area handling for notched devices
+ */
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 export function PremiumChatLayout({
   header,
   messages,
@@ -27,6 +44,7 @@ export function PremiumChatLayout({
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+<<<<<<< HEAD
 
   // Handle keyboard height for mobile
   useEffect(() => {
@@ -66,10 +84,64 @@ export function PremiumChatLayout({
       }
       document.removeEventListener('focusin', handleFocusIn);
       document.removeEventListener('focusout', handleFocusOut);
+=======
+  const keyboardAnimRef = useRef<number | null>(null);
+
+  // --- KEYBOARD HANDLING ---
+  // Uses the VisualViewport API for precise keyboard detection.
+  // Falls back to viewport height comparison for older browsers.
+  useEffect(() => {
+    if (!isMobile) return;
+
+    let lastHeight = 0;
+
+    const updateKeyboardHeight = () => {
+      const viewport = window.visualViewport;
+      if (!viewport) return;
+
+      const heightDiff = window.innerHeight - viewport.height;
+      // Only treat as keyboard if the difference is significant (>100px)
+      // to avoid false positives from browser chrome changes
+      const newHeight = heightDiff > 100 ? heightDiff : 0;
+
+      if (newHeight !== lastHeight) {
+        lastHeight = newHeight;
+
+        // Cancel any pending animation frame
+        if (keyboardAnimRef.current) {
+          cancelAnimationFrame(keyboardAnimRef.current);
+        }
+
+        // Use rAF for smooth transition
+        keyboardAnimRef.current = requestAnimationFrame(() => {
+          setKeyboardHeight(newHeight);
+        });
+      }
+    };
+
+    const viewport = window.visualViewport;
+
+    if (viewport) {
+      viewport.addEventListener('resize', updateKeyboardHeight);
+      viewport.addEventListener('scroll', updateKeyboardHeight);
+      updateKeyboardHeight();
+    }
+
+    // Cleanup
+    return () => {
+      if (viewport) {
+        viewport.removeEventListener('resize', updateKeyboardHeight);
+        viewport.removeEventListener('scroll', updateKeyboardHeight);
+      }
+      if (keyboardAnimRef.current) {
+        cancelAnimationFrame(keyboardAnimRef.current);
+      }
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     };
   }, [isMobile]);
 
   return (
+<<<<<<< HEAD
     <div 
       ref={containerRef}
       className={cn(
@@ -82,12 +154,30 @@ export function PremiumChatLayout({
       }}
     >
       {/* Stories Bar - Fixed at top */}
+=======
+    <div
+      ref={containerRef}
+      className={cn(
+        "flex flex-col bg-transparent relative",
+        // dvh is the gold standard for modern mobile viewports
+        isMobile ? "h-[100dvh]" : "h-screen",
+        "overflow-hidden",
+        className
+      )}
+
+      style={{
+        contain: 'layout style',
+      }}
+    >
+      {/* Stories Bar */}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       {stories && (
         <div className="flex-shrink-0 border-b border-border/20">
           {stories}
         </div>
       )}
 
+<<<<<<< HEAD
       {/* Header - Fixed */}
       <div className="flex-shrink-0 border-b border-border/20 bg-background/95 backdrop-blur-sm z-20">
         {header}
@@ -106,25 +196,57 @@ export function PremiumChatLayout({
       </div>
 
       {/* Action Buttons (Ad/Review) */}
+=======
+      {/* Header */}
+      <div className="flex-shrink-0 border-b border-border/15 bg-background/20 backdrop-blur-md z-20">
+        {header}
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-hidden relative" style={{ contain: 'strict' }}>
+        {messages}
+      </div>
+
+      {/* Action Buttons */}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       {actions && (
         <div className="flex-shrink-0 bg-background/95 backdrop-blur-sm z-20">
           {actions}
         </div>
       )}
 
+<<<<<<< HEAD
       {/* Input Bar - Fixed Bottom */}
       <div className="flex-shrink-0 border-t border-border/20 bg-background/95 backdrop-blur-sm z-30">
         {input}
+=======
+      {/* Input Bar Wrapper */}
+      <div className="flex-shrink-0 z-30">
+        {input}
+
+        {/* Dynamic Keyboard Spacer — Only active on mobile when keyboard is up */}
+        {isMobile && keyboardHeight > 0 && (
+          <div
+            style={{ height: `${keyboardHeight}px` }}
+            className="w-full bg-background transition-all duration-300"
+          />
+        )}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       </div>
 
       {/* Nested Children (Modals, Overlays) */}
       {children}
 
+<<<<<<< HEAD
       {/* Emoji Picker - Layered Above */}
+=======
+      {/* Emoji Picker — Layered Above */}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       {emojiPicker}
     </div>
   );
 }
+<<<<<<< HEAD
 
 // Scroll to Bottom Button Component
 function ScrollToBottomButton({ containerRef }: { containerRef: React.RefObject<HTMLDivElement> }) {
@@ -187,3 +309,5 @@ function ScrollToBottomButton({ containerRef }: { containerRef: React.RefObject<
     </AnimatePresence>
   );
 }
+=======
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)

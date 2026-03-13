@@ -1,14 +1,23 @@
 {
   "name": "chatterbox",
   "private": true,
+<<<<<<< HEAD
   "version": "0.0.0",
+=======
+  "version": "1.1.24",
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
+<<<<<<< HEAD
     "preview": "vite preview"
+=======
+    "preview": "vite preview",
+    "build:apk": "pwsh -ExecutionPolicy Bypass -File build-apk.ps1"
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   },
   "dependencies": {
     "@capacitor-community/admob": "^8.0.0",
@@ -56,6 +65,12 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.26",
+<<<<<<< HEAD
+=======
+    "i18next": "^25.8.11",
+    "i18next-browser-languagedetector": "^8.2.1",
+    "i18next-http-backend": "^3.0.2",
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     "input-otp": "^1.4.2",
     "lucide-react": "^0.462.0",
     "next-themes": "^0.3.0",
@@ -63,6 +78,10 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.61.1",
+<<<<<<< HEAD
+=======
+    "react-i18next": "^16.5.4",
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     "react-image-crop": "^11.0.10",
     "react-resizable-panels": "^2.1.9",
     "react-router-dom": "^6.30.1",

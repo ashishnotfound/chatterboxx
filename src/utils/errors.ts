@@ -22,6 +22,7 @@ export function getUserFriendlyError(error: Error | { code?: string; message?: s
   switch (errorCode) {
     case 'PGRST116':
       return "You don't have permission to perform this action.";
+<<<<<<< HEAD
     
     case '23503':
       return 'The requested resource was not found.';
@@ -38,11 +39,30 @@ export function getUserFriendlyError(error: Error | { code?: string; message?: s
     case 'PGRST301':
       return 'The requested resource was not found.';
     
+=======
+
+    case '23503':
+      return 'The requested resource was not found.';
+
+    case '23505':
+      return 'This item already exists.';
+
+    case '42P01':
+      return 'Database configuration error. Please contact support.';
+
+    case '42703':
+      return `Database configuration error (Missing Column): ${errorMessage || 'Unknown column'}. Please ensure all migrations are run.`;
+
+    case 'PGRST301':
+      return 'The requested resource was not found.';
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     default:
       // Check error message for common patterns
       if (errorMessage.includes('permission') || errorMessage.includes('denied')) {
         return "You don't have permission to perform this action.";
       }
+<<<<<<< HEAD
       
       if (errorMessage.includes('not found') || errorMessage.includes('does not exist')) {
         return 'The requested resource was not found.';
@@ -62,6 +82,38 @@ export function getUserFriendlyError(error: Error | { code?: string; message?: s
       
       // Return a generic user-friendly message
       return 'Something went wrong. Please try again or contact support if the problem persists.';
+=======
+
+      if (errorMessage.includes('not found') || errorMessage.includes('does not exist')) {
+        return 'The requested resource was not found.';
+      }
+
+      if (errorMessage.includes('already exists') || errorMessage.includes('duplicate')) {
+        return 'This item already exists.';
+      }
+
+      if (errorMessage.includes('foreign key') || errorMessage.includes('constraint')) {
+        return 'Invalid data. Please check your input and try again.';
+      }
+
+      if (errorMessage.includes('timeout')) {
+        return 'Request timed out. Please try again.';
+      }
+
+      // Return a generic user-friendly message
+      console.error('FULL ERROR OBJECT:', error); // Log full error
+      
+      if (errorMessage) return `${errorMessage}${errorCode ? ` (${errorCode})` : ''}`;
+      
+      try {
+        const json = JSON.stringify(error);
+        if (json && json !== '{}') return `Error: ${json}`;
+      } catch (e) {
+        // Fallback for circular refs
+      }
+
+      return errorCode ? `Error code: ${errorCode}` : 'An unexpected error occurred';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   }
 }
 

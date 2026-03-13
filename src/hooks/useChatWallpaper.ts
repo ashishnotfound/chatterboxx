@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+import { compressImage } from '@/utils/image';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 interface WallpaperSettings {
   wallpaperUrl: string | null;
@@ -11,7 +16,62 @@ interface WallpaperSettings {
 
 const WALLPAPER_BUCKET = 'chat-wallpapers';
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+<<<<<<< HEAD
 const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
+=======
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+// Simple IndexedDB wrapper for large files
+const DB_NAME = 'ChatterboxDB';
+const STORE_NAME = 'wallpapers';
+
+const initDB = (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, 1);
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME);
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+};
+
+const saveToIDB = async (key: string, blob: Blob): Promise<void> => {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    store.put(blob, key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+};
+
+const getFromIDB = async (key: string): Promise<Blob | null> => {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const store = tx.objectStore(STORE_NAME);
+    const request = store.get(key);
+    request.onsuccess = () => resolve(request.result || null);
+    request.onerror = () => reject(request.error);
+  });
+};
+
+const removeFromIDB = async (key: string): Promise<void> => {
+  const db = await initDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    const store = tx.objectStore(STORE_NAME);
+    store.delete(key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+};
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 export function useChatWallpaper() {
   const { user } = useAuth();
@@ -22,6 +82,7 @@ export function useChatWallpaper() {
     error: null,
   });
 
+<<<<<<< HEAD
   // Cache wallpaper URL locally
   const getCachedWallpaper = useCallback((userId: string): string | null => {
     const cacheKey = `chat_wallpaper_${userId}`;
@@ -100,10 +161,18 @@ export function useChatWallpaper() {
   // Fetch current wallpaper
   const fetchWallpaper = useCallback(async () => {
     if (!user) return;
+=======
+  // Fetch current wallpaper
+  const fetchWallpaper = useCallback(async () => {
+    // If no user, maybe guest mode?
+    const userId = user?.id || 'guest';
+    const localKey = `wallpaper_${userId}`;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
     setSettings(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
+<<<<<<< HEAD
       // Check cache first
       const cached = getCachedWallpaper(user.id);
       if (cached) {
@@ -131,6 +200,39 @@ export function useChatWallpaper() {
         wallpaperUrl: getWallpaperUrl(wallpaperUrl),
         isLoading: false,
       }));
+=======
+      // 1. Check IndexedDB first (Local Wallpaper)
+      const localBlob = await getFromIDB(localKey);
+      if (localBlob) {
+        const url = URL.createObjectURL(localBlob);
+        setSettings(prev => ({
+          ...prev,
+          wallpaperUrl: url,
+          isLoading: false,
+        }));
+        return;
+      }
+
+      // 2. If authenticated, fetch from Supabase
+      if (user) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('chat_wallpaper')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        const wallpaperUrl = data?.chat_wallpaper;
+        setSettings(prev => ({
+          ...prev,
+          wallpaperUrl: wallpaperUrl || null,
+          isLoading: false,
+        }));
+      } else {
+        setSettings(prev => ({ ...prev, isLoading: false }));
+      }
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     } catch (error) {
       console.error('Error fetching wallpaper:', error);
       setSettings(prev => ({
@@ -139,6 +241,7 @@ export function useChatWallpaper() {
         isLoading: false,
       }));
     }
+<<<<<<< HEAD
   }, [user, getCachedWallpaper, setCachedWallpaper, getWallpaperUrl]);
 
   // Upload wallpaper
@@ -150,6 +253,17 @@ export function useChatWallpaper() {
       throw new Error('Only JPG and PNG images are allowed');
     }
 
+=======
+  }, [user]);
+
+  // Upload wallpaper (Persist to Supabase)
+  const uploadWallpaper = useCallback(async (file: File): Promise<void> => {
+    if (!user) throw new Error('User not authenticated');
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      throw new Error('Only JPG and PNG images are allowed');
+    }
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     if (file.size > MAX_FILE_SIZE) {
       throw new Error('Image size must be less than 5MB');
     }
@@ -157,9 +271,25 @@ export function useChatWallpaper() {
     setSettings(prev => ({ ...prev, isUploading: true, error: null }));
 
     try {
+<<<<<<< HEAD
       // Compress image
       const compressedFile = await compressImage(file);
 
+=======
+      const compressedFile = await compressImage(file);
+
+      // Save locally to IDB for instant access
+      await saveToIDB(`wallpaper_${user.id}`, compressedFile);
+      const localUrl = URL.createObjectURL(compressedFile);
+
+      // Optimistic update
+      setSettings(prev => ({
+        ...prev,
+        wallpaperUrl: localUrl,
+        isUploading: true // Keep loading while uploading source
+      }));
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       // Upload to Supabase Storage
       const filePath = `users/${user.id}/wallpaper.jpg`;
       const { error: uploadError } = await supabase.storage
@@ -184,6 +314,7 @@ export function useChatWallpaper() {
 
       if (updateError) throw updateError;
 
+<<<<<<< HEAD
       // Update cache and state
       setCachedWallpaper(user.id, publicUrl);
       setSettings(prev => ({
@@ -191,6 +322,13 @@ export function useChatWallpaper() {
         wallpaperUrl: getWallpaperUrl(publicUrl),
         isUploading: false,
       }));
+=======
+      setSettings(prev => ({
+        ...prev,
+        isUploading: false,
+      }));
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     } catch (error) {
       console.error('Error uploading wallpaper:', error);
       setSettings(prev => ({
@@ -200,6 +338,7 @@ export function useChatWallpaper() {
       }));
       throw error;
     }
+<<<<<<< HEAD
   }, [user, compressImage, setCachedWallpaper, getWallpaperUrl]);
 
   // Remove wallpaper
@@ -219,6 +358,61 @@ export function useChatWallpaper() {
 
       // Remove from cache
       setCachedWallpaper(user.id, null);
+=======
+  }, [user]);
+
+  // Set local wallpaper (No upload, just local IDB)
+  const setLocalWallpaper = useCallback(async (file: File): Promise<void> => {
+    setSettings(prev => ({ ...prev, isUploading: true, error: null }));
+    const userId = user?.id || 'guest';
+
+    try {
+      if (!ALLOWED_TYPES.includes(file.type)) throw new Error('Only JPG and PNG images are allowed');
+
+      // Use compressed file to save space
+      const compressedFile = await compressImage(file);
+
+      // Save to IndexedDB
+      await saveToIDB(`wallpaper_${userId}`, compressedFile);
+
+      // Create Object URL for display
+      const url = URL.createObjectURL(compressedFile);
+
+      setSettings(prev => ({
+        ...prev,
+        wallpaperUrl: url,
+        isUploading: false
+      }));
+    } catch (error) {
+      console.error('Error setting local wallpaper:', error);
+      setSettings(prev => ({
+        ...prev,
+        error: error instanceof Error ? error.message : 'Failed to set wallpaper',
+        isUploading: false
+      }));
+      throw error;
+    }
+  }, [user]);
+
+  // Remove wallpaper
+  const removeWallpaper = useCallback(async (): Promise<void> => {
+    setSettings(prev => ({ ...prev, isUploading: true, error: null }));
+    const userId = user?.id || 'guest';
+
+    try {
+      // 1. Remove from IDB
+      await removeFromIDB(`wallpaper_${userId}`);
+
+      // 2. Update database if authenticated
+      if (user) {
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({ chat_wallpaper: null })
+          .eq('id', user.id);
+
+        if (updateError) throw updateError;
+      }
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
       setSettings(prev => ({
         ...prev,
@@ -234,7 +428,11 @@ export function useChatWallpaper() {
       }));
       throw error;
     }
+<<<<<<< HEAD
   }, [user, setCachedWallpaper]);
+=======
+  }, [user]);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   // Initialize on mount
   useEffect(() => {
@@ -247,6 +445,10 @@ export function useChatWallpaper() {
     isLoading: settings.isLoading,
     error: settings.error,
     uploadWallpaper,
+<<<<<<< HEAD
+=======
+    setLocalWallpaper,
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     removeWallpaper,
     refetch: fetchWallpaper,
   };

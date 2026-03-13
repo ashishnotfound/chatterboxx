@@ -5,6 +5,70 @@
 @tailwind utilities;
 
 @layer base {
+<<<<<<< HEAD
+=======
+  * {
+    unicode-bidi: plaintext;
+    /* Enable hardware acceleration for smooth animations */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Backface visibility fix for flickering on mobile */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  html {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Prevent text flickering during animations */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  body {
+    font-family: inherit;
+    line-height: 1.6;
+    /* Smooth scrolling for better UX */
+    scroll-behavior: smooth;
+    /* Prevent overscroll bounce on mobile */
+    overscroll-behavior: contain;
+  }
+
+  /* Optimize chat scrolling performance */
+  .chat-scrollbar {
+    /* Enable momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent scroll chaining */
+    overscroll-behavior: contain;
+    /* Hardware acceleration for smooth scrolling */
+    transform: translateZ(0);
+    will-change: scroll-position;
+  }
+
+  /* Optimize animations for 60 FPS */
+  .motion-safe * {
+    /* Only animate transform and opacity for GPU acceleration */
+    will-change: transform, opacity;
+  }
+
+  /* Prevent layout shifts during message animations */
+  .message-bubble {
+    contain: layout style paint;
+  }
+
+  /* Optimize input field for mobile keyboards */
+  textarea {
+    /* Prevent zoom on iOS */
+    font-size: 16px;
+    /* Remove default styling for better control */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   :root {
     /* Divine Chat Dark Theme - Purple Gradient */
     --background: 270 50% 8%;
@@ -78,14 +142,19 @@
     font-family: 'Outfit', sans-serif;
     /* Prevent horizontal scroll */
     overflow-x: hidden;
+<<<<<<< HEAD
     /* Safe area insets for mobile devices */
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
+=======
+    height: 100%;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     background: var(--gradient-main);
+<<<<<<< HEAD
     min-height: 100vh;
     height: 100vh;
     margin: 0;
@@ -103,6 +172,32 @@
     -webkit-overflow-scrolling: touch;
   }
   }
+=======
+    min-height: 100dvh;
+    height: 100dvh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    
+    /* Safe area handling - handled in components */
+    padding: 0;
+  }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100dvh;
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+  }
+}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   /* Fix for iOS Safari address bar */
   @supports (-webkit-touch-callout: none) {
@@ -118,11 +213,16 @@
     user-select: none;
   }
 
+<<<<<<< HEAD
   /* Ensure proper touch targets (minimum 44x44px) */
   button, a, [role="button"] {
     min-height: 44px;
     min-width: 44px;
   }
+=======
+  /* Ensure proper touch targets (minimum 44x44px) — only for standalone interactive elements */
+  /* Removed blanket min-height/width rule that was clipping small inline buttons/icons */
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   /* Fix for mobile input zoom */
   @media screen and (max-width: 768px) {
@@ -139,10 +239,77 @@
 @layer components {
   /* Glass morphism card */
   .glass-card {
+<<<<<<< HEAD
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
+=======
+    background: hsla(270, 40%, 20%, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsla(270, 30%, 50%, 0.2);
+  }
+
+  /* Avatar Border Gradients */
+  .avatar-border-gradient {
+    @apply rounded-full p-0.5;
+    background-size: 200% 200%;
+  }
+
+  .avatar-border-rainbow {
+    background-image: linear-gradient(45deg, #ff0080, #7928ca, #0070f3, #00dfd8, #ff0080);
+    animation: border-rotate 4s linear infinite;
+  }
+
+  .avatar-border-sunset {
+    background-image: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+  }
+
+  .avatar-border-ocean {
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+  }
+
+  .avatar-border-galaxy {
+    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+  }
+
+  .avatar-border-aurora {
+    background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
+  }
+
+  .avatar-border-fire {
+    background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+  }
+
+  .avatar-border-black_white {
+    background-image: linear-gradient(to right, #434343 0%, black 100%);
+  }
+
+  /* Avatar Glow Animated */
+  .avatar-glow-animated {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  /* Story Circle */
+  .story-circle {
+    @apply rounded-full p-0.5 transition-transform duration-300;
+    background: hsl(var(--muted));
+  }
+
+  .story-circle.active {
+    background: var(--gradient-avatar);
+  }
+
+  .story-circle:hover {
+    @apply scale-105;
+  }
+
+  @keyframes border-rotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   }
 
   /* Message bubble improvements */
@@ -420,6 +587,46 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+<<<<<<< HEAD
+=======
+
+  /* Premium chat scrollbar */
+  .chat-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border) / 0.3) transparent;
+    scroll-behavior: auto; /* Prevent CSS smooth scroll from fighting JS scroll */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  .chat-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .chat-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .chat-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--border) / 0.25);
+    border-radius: 999px;
+  }
+
+  .chat-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--border) / 0.4);
+  }
+
+  /* Hide scrollbar on mobile for cleaner chat */
+  @media (max-width: 768px) {
+    .chat-scrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .chat-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  }
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 }
 
 /* Animations */
@@ -487,3 +694,92 @@
     box-shadow: 0 0 20px hsl(340 85% 65% / 0.6);
   }
 }
+<<<<<<< HEAD
+=======
+/* --- Mobile Native Feel & Optimizations --- */
+
+@layer base {
+  html, body {
+    /* Prevent bouncy scrolling on the body level which can break fixed headers */
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    /* Optimize for touch scrolling */
+    scroll-behavior: smooth;
+  }
+
+  /* Improved touch targets and interaction feel */
+  button, [role="button"], a {
+    touch-action: manipulation;
+    user-select: none;
+  }
+}
+
+@layer utilities {
+  /* Safe Area Utilities - Essential for Notches (iPhone/Modern Android) */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 1rem);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 1rem);
+  }
+  
+  .safe-area-pt {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  
+  .safe-area-pb {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .px-safe {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Smooth liquid scroll for mobile lists */
+  .liquid-scroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    will-change: transform;
+  }
+
+  /* Full screen handling with dynamic viewport units */
+  .h-dynamic-screen {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .min-h-dynamic-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}
+
+/* Fix for mobile keyboard pushing up content or causing weird layouts */
+@media (max-width: 768px) {
+  .chat-container {
+    height: calc(100dvh - env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Better feedback for touch interactions */
+@media (hover: none) {
+  .glass-card:active {
+    background-color: hsl(var(--secondary) / 0.5);
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)

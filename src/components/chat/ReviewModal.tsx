@@ -3,7 +3,11 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, MessageSquareHeart, Star } from 'lucide-react';
 import { directDiscordService } from '@/api/direct-discord.service';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 

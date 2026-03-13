@@ -22,15 +22,27 @@ export function useAppUsage() {
     sessionStartTime: null,
     lastActiveTime: null,
   });
+<<<<<<< HEAD
   
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isActiveRef = useRef(true);
+=======
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isActiveRef = useRef(true);
+  // Stable refs for handlers so the event-listener useEffect never needs to re-run
+  const foregroundRef = useRef<() => void>(() => { });
+  const backgroundRef = useRef<() => void>(() => { });
+  const startTimerRef = useRef<() => void>(() => { });
+  const cleanupTimerRef = useRef<() => void>(() => { });
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   // Load usage stats from localStorage on mount
   useEffect(() => {
     loadUsageStats();
   }, []);
 
+<<<<<<< HEAD
   // Save usage stats to localStorage whenever they change
   useEffect(() => {
     saveUsageStats();
@@ -50,10 +62,26 @@ export function useAppUsage() {
       } else if (!state.isActive && isActiveRef.current) {
         // App going to background
         handleAppBackground();
+=======
+  // NOTE: We do NOT watch usageStats in a useEffect for saving.
+  // That would save to localStorage every second (timer updates state every 1s).
+  // Instead we save directly inside each mutation function below.
+
+  // Handle app state changes (foreground/background)
+  useEffect(() => {
+    if (Capacitor.getPlatform() === 'web') return;
+
+    const handleAppStateChange = (state: { isActive: boolean }) => {
+      if (state.isActive && !isActiveRef.current) {
+        foregroundRef.current();
+      } else if (!state.isActive && isActiveRef.current) {
+        backgroundRef.current();
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       }
       isActiveRef.current = state.isActive;
     };
 
+<<<<<<< HEAD
     // Add app state listener
     const appStateListener = App.addListener('appStateChange', handleAppStateChange);
 
@@ -64,6 +92,16 @@ export function useAppUsage() {
         handleAppForeground();
       } else if (!isVisible && isActiveRef.current) {
         handleAppBackground();
+=======
+    const appStateListener = App.addListener('appStateChange', handleAppStateChange);
+
+    const handleVisibilityChange = () => {
+      const isVisible = document.visibilityState === 'visible';
+      if (isVisible && !isActiveRef.current) {
+        foregroundRef.current();
+      } else if (!isVisible && isActiveRef.current) {
+        backgroundRef.current();
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       }
       isActiveRef.current = isVisible;
     };
@@ -73,9 +111,17 @@ export function useAppUsage() {
     return () => {
       appStateListener.then(listener => listener.remove());
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+<<<<<<< HEAD
       cleanupTimer();
     };
   }, []);
+=======
+      // Capture current value to avoid lint: 'ref value will have changed'
+      const cleanup = cleanupTimerRef.current;
+      cleanup();
+    };
+  }, []); // intentionally empty — uses stable refs for all callbacks
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   const loadUsageStats = () => {
     try {
@@ -119,15 +165,21 @@ export function useAppUsage() {
   };
 
   const handleAppForeground = () => {
+<<<<<<< HEAD
     console.log('App came to foreground');
     isActiveRef.current = true;
     
+=======
+    isActiveRef.current = true;
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     setUsageStats(prev => ({
       ...prev,
       sessionStartTime: Date.now(),
       lastActiveTime: Date.now(),
     }));
 
+<<<<<<< HEAD
     // Start tracking current session
     startTimer();
   };
@@ -142,12 +194,28 @@ export function useAppUsage() {
         Math.floor((Date.now() - prev.sessionStartTime) / 1000) : 0;
       
       return {
+=======
+    startTimer();
+  };
+  // Keep ref in sync so the event listener useEffect always calls latest version
+  foregroundRef.current = handleAppForeground;
+
+  const handleAppBackground = () => {
+    isActiveRef.current = false;
+
+    setUsageStats(prev => {
+      const sessionTime = prev.sessionStartTime ?
+        Math.floor((Date.now() - prev.sessionStartTime) / 1000) : 0;
+
+      const next = {
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
         ...prev,
         totalLifetime: prev.totalLifetime + sessionTime,
         currentSession: 0,
         sessionStartTime: null,
         lastActiveTime: Date.now(),
       };
+<<<<<<< HEAD
     });
 
     // Stop tracking
@@ -171,6 +239,35 @@ export function useAppUsage() {
       }
     }, 1000); // Update every second
   };
+=======
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...next, lastActiveTime: Date.now() }));
+      } catch (_e) { /* non-critical */ }
+
+      return next;
+    });
+
+    cleanupTimer();
+  };
+  backgroundRef.current = handleAppBackground;
+
+  const startTimer = () => {
+    cleanupTimer();
+
+    intervalRef.current = setInterval(() => {
+      if (isActiveRef.current) {
+        setUsageStats(prev => {
+          const sessionTime = prev.sessionStartTime ?
+            Math.floor((Date.now() - prev.sessionStartTime) / 1000) : 0;
+
+          return { ...prev, currentSession: sessionTime };
+        });
+      }
+    }, 1000);
+  };
+  startTimerRef.current = startTimer;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   const cleanupTimer = () => {
     if (intervalRef.current) {
@@ -178,6 +275,10 @@ export function useAppUsage() {
       intervalRef.current = null;
     }
   };
+<<<<<<< HEAD
+=======
+  cleanupTimerRef.current = cleanupTimer;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   // Format seconds to human readable format
   const formatTime = (seconds: number): string => {

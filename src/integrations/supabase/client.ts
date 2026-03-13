@@ -14,4 +14,8 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     persistSession: true,
     autoRefreshToken: true,
   }
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)

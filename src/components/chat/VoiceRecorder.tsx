@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useState, useRef, useEffect } from 'react';
+=======
+import { useState, useRef, useEffect, useCallback } from 'react';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, X, Send, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -21,6 +25,11 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
   const [currentY, setCurrentY] = useState(0);
   const [isSliding, setIsSliding] = useState(false);
 
+<<<<<<< HEAD
+=======
+  const durationRef = useRef(0);
+  const canSendRef = useRef(false);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
@@ -28,6 +37,7 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
 
+<<<<<<< HEAD
   useEffect(() => {
     return () => {
       // Cleanup on unmount
@@ -46,10 +56,48 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
       const source = audioContext.createMediaStreamSource(stream);
       source.connect(analyser);
       
+=======
+  const stopRecording = useCallback(() => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+      mediaRecorderRef.current.stop();
+    }
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    setIsRecording(false);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      stopRecording();
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [stopRecording]);
+
+  const startRecording = async () => {
+    try {
+      audioChunksRef.current = [];
+      durationRef.current = 0;
+      canSendRef.current = false;
+      setDuration(0);
+      setCanSend(false);
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
+
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const analyser = audioContext.createAnalyser();
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(analyser);
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       analyser.fftSize = 256;
       audioContextRef.current = audioContext;
       analyserRef.current = analyser;
 
+<<<<<<< HEAD
       // Update audio level for waveform
       const updateAudioLevel = () => {
         if (!analyserRef.current) return;
@@ -72,6 +120,25 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
           : MediaRecorder.isTypeSupported('audio/ogg')
           ? 'audio/ogg'
           : 'audio/mp4'
+=======
+      const updateAudioLevel = () => {
+        if (!analyserRef.current || !audioContextRef.current || audioContextRef.current.state === 'closed') return;
+        const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+        analyserRef.current.getByteFrequencyData(dataArray);
+        const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+        setAudioLevel(average / 255);
+        if (mediaRecorderRef.current?.state === 'recording') {
+          requestAnimationFrame(updateAudioLevel);
+        }
+      };
+
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: MediaRecorder.isTypeSupported('audio/webm')
+          ? 'audio/webm'
+          : MediaRecorder.isTypeSupported('audio/ogg')
+            ? 'audio/ogg'
+            : 'audio/mp4'
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       });
 
       mediaRecorder.ondataavailable = (event) => {
@@ -82,6 +149,7 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
 
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: mediaRecorder.mimeType });
+<<<<<<< HEAD
         const durationSeconds = duration;
         
         if (durationSeconds >= 0.5 && canSend) {
@@ -114,15 +182,47 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
           }
           return newDuration;
         });
+=======
+        if (durationRef.current >= 0.5 && canSendRef.current) {
+          onRecordingComplete(audioBlob, durationRef.current);
+        }
+
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop());
+          streamRef.current = null;
+        }
+        if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+          audioContextRef.current.close();
+        }
+      };
+
+      mediaRecorderRef.current = mediaRecorder;
+      mediaRecorder.start(100);
+      setIsRecording(true);
+      updateAudioLevel();
+
+      intervalRef.current = setInterval(() => {
+        durationRef.current += 0.1;
+        setDuration(durationRef.current);
+        if (durationRef.current >= 0.5 && !canSendRef.current) {
+          canSendRef.current = true;
+          setCanSend(true);
+        }
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       }, 100);
 
     } catch (error) {
       console.error('Error starting recording:', error);
+<<<<<<< HEAD
       toast.error('Failed to access microphone. Please check permissions.');
+=======
+      toast.error('Failed to access microphone.');
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       onCancel();
     }
   };
 
+<<<<<<< HEAD
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
@@ -133,6 +233,8 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
     }
     setIsRecording(false);
   };
+=======
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -159,11 +261,19 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isRecording) return;
+<<<<<<< HEAD
     
     const touch = e.touches[0];
     const deltaY = touch.clientY - startY;
     setCurrentY(touch.clientY);
     
+=======
+
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - startY;
+    setCurrentY(touch.clientY);
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     // If sliding up more than 50px, show cancel state
     if (deltaY < -50) {
       setIsSliding(true);
@@ -174,9 +284,15 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!isRecording) return;
+<<<<<<< HEAD
     
     const deltaY = currentY - startY;
     
+=======
+
+    const deltaY = currentY - startY;
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     // If slid up (cancel), don't send
     if (deltaY < -50 || !canSend) {
       stopRecording();
@@ -223,7 +339,11 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
                   key={i}
                   className="w-1 bg-primary rounded-full"
                   animate={{
+<<<<<<< HEAD
                     height: isRecording 
+=======
+                    height: isRecording
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                       ? `${20 + audioLevel * 30 + Math.sin(i * 0.5 + duration * 2) * 10}px`
                       : '4px',
                     opacity: isRecording ? 0.8 : 0.3
@@ -248,11 +368,19 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
               onTouchEnd={handleTouchEnd}
               className={`
                 w-14 h-14 rounded-full flex items-center justify-center transition-all
+<<<<<<< HEAD
                 ${isRecording 
                   ? 'bg-destructive scale-110' 
                   : isSliding
                   ? 'bg-destructive/50'
                   : 'bg-primary'
+=======
+                ${isRecording
+                  ? 'bg-destructive scale-110'
+                  : isSliding
+                    ? 'bg-destructive/50'
+                    : 'bg-primary'
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                 }
               `}
               whileTap={{ scale: 0.95 }}
@@ -298,8 +426,13 @@ export function VoiceRecorder({ onRecordingComplete, onCancel }: VoiceRecorderPr
 
           {/* Instructions */}
           <p className="text-xs text-center text-muted-foreground mt-2">
+<<<<<<< HEAD
             {isRecording 
               ? isSliding 
+=======
+            {isRecording
+              ? isSliding
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                 ? 'Release to cancel'
                 : 'Release to send, slide up to cancel'
               : 'Hold to record voice message'

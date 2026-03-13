@@ -3,7 +3,11 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Switch } from '@/components/ui/switch';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { toast } from 'sonner';
 import { ArrowLeft, MessageCircle, UserPlus, Heart, Bell, BellOff } from 'lucide-react';
 

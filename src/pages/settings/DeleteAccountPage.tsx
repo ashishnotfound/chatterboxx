@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { ArrowLeft, Trash2, AlertTriangle, Shield } from 'lucide-react';

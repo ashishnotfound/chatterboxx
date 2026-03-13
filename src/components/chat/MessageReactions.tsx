@@ -10,11 +10,19 @@ interface MessageReactionsProps {
   isOwnMessage: boolean;
 }
 
+<<<<<<< HEAD
 export function MessageReactions({ 
   messageId, 
   reactions, 
   onToggleReaction,
   isOwnMessage 
+=======
+export function MessageReactions({
+  messageId,
+  reactions,
+  onToggleReaction,
+  isOwnMessage
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 }: MessageReactionsProps) {
   const [showPicker, setShowPicker] = useState(false);
 
@@ -24,7 +32,11 @@ export function MessageReactions({
   };
 
   return (
+<<<<<<< HEAD
     <div className={`flex items-center gap-1 mt-1 ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
+=======
+    <div className={`flex flex-wrap items-center gap-1 mt-1 ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       {/* Existing reactions */}
       <AnimatePresence>
         {reactions.map((reaction) => (
@@ -38,8 +50,13 @@ export function MessageReactions({
             className={`
               flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-xs
               transition-colors
+<<<<<<< HEAD
               ${reaction.hasUserReacted 
                 ? 'bg-primary/20 border border-primary/30' 
+=======
+              ${reaction.hasUserReacted
+                ? 'bg-primary/20 border border-primary/30'
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                 : 'bg-secondary/50 hover:bg-secondary'
               }
             `}

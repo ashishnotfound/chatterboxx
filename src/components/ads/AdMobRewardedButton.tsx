@@ -2,19 +2,34 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Star, Sparkles, Gift } from 'lucide-react';
 import { useAdMobRewardedAds } from '@/hooks/useAdMobRewardedAds';
+<<<<<<< HEAD
+=======
+import { AdMobRewardItem } from '@capacitor-community/admob';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
 interface AdMobRewardedButtonProps {
+<<<<<<< HEAD
   onReward?: (reward: any) => void;
+=======
+  onReward?: (reward: AdMobRewardItem) => void;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   className?: string;
   disabled?: boolean;
 }
 
+<<<<<<< HEAD
 export function AdMobRewardedButton({ 
   onReward, 
   className = '',
   disabled = false 
+=======
+export function AdMobRewardedButton({
+  onReward,
+  className = '',
+  disabled = false
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 }: AdMobRewardedButtonProps) {
   const {
     isReady,

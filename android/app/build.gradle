@@ -7,8 +7,13 @@ android {
         applicationId "com.chatterbox.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+<<<<<<< HEAD
         versionCode 1
         versionName "1.0"
+=======
+        versionCode 24
+        versionName "1.1.24"
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -22,6 +27,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+<<<<<<< HEAD
+=======
+    compileOptions {
+        sourceCompatibility rootProject.ext.javaVersion
+        targetCompatibility rootProject.ext.javaVersion
+    }
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 }
 
 repositories {
@@ -52,3 +64,15 @@ try {
 } catch(Exception ignored) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
 }
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)

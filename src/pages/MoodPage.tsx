@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+import { ProfileData } from '@/types/auth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { AppLayout } from '@/components/layout/AppLayout';
 import { ResponsiveLayout } from '@/components/layout/ResponsiveLayout';
 import { BottomNav } from '@/components/layout/BottomNav';
@@ -18,6 +23,7 @@ const statuses: Array<{
   color: string;
   icon: React.ReactNode;
 }> = [
+<<<<<<< HEAD
   {
     id: 'online',
     label: 'Online',
@@ -47,11 +53,46 @@ const statuses: Array<{
     icon: <Circle className="w-5 h-5" />
   },
 ];
+=======
+    {
+      id: 'online',
+      label: 'Online',
+      description: 'You\'re active and available',
+      color: '#22c55e',
+      icon: <Circle className="w-5 h-5 fill-current" />
+    },
+    {
+      id: 'idle',
+      label: 'Idle',
+      description: 'You\'re away from keyboard',
+      color: '#f59e0b',
+      icon: <Moon className="w-5 h-5 fill-current" />
+    },
+    {
+      id: 'dnd',
+      label: 'Do Not Disturb',
+      description: 'You won\'t receive notifications',
+      color: '#ef4444',
+      icon: <Minus className="w-5 h-5" />
+    },
+    {
+      id: 'invisible',
+      label: 'Invisible',
+      description: 'You appear offline to everyone',
+      color: '#6b7280',
+      icon: <Circle className="w-5 h-5" />
+    },
+  ];
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 export default function MoodPage() {
   const navigate = useNavigate();
   const { profile, updateProfile } = useAuth();
+<<<<<<< HEAD
   const [activeTab, setActiveTab] = useState<TabId>('home');
+=======
+  const [activeTab, setActiveTab] = useState<TabId>('status');
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   const [selectedStatus, setSelectedStatus] = useState<PresenceStatus>(
     (profile?.presence_status as PresenceStatus) || 'online'
   );
@@ -73,7 +114,11 @@ export default function MoodPage() {
     setSelectedStatus(status);
 
     // Update presence status and related fields
+<<<<<<< HEAD
     const updateData: any = {};
+=======
+    const updateData: Partial<ProfileData> = {};
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
     // When invisible, also set is_online to false
     if (status === 'invisible') {
@@ -98,6 +143,7 @@ export default function MoodPage() {
     // If presence_status column doesn't exist, fall back to basic fields only
     if (error && (error.message?.includes('presence_status') || error.message?.includes('column') || error.message?.includes('does not exist'))) {
       console.warn('presence_status column may not exist, falling back to basic status update');
+<<<<<<< HEAD
       
       // Remove presence_status and try again with just is_online and is_stealth_mode
       const fallbackData: any = {
@@ -108,6 +154,18 @@ export default function MoodPage() {
       const fallbackResult = await updateProfile(fallbackData);
       error = fallbackResult.error;
       
+=======
+
+      // Remove presence_status and try again with just is_online and is_stealth_mode
+      const fallbackData: Partial<ProfileData> = {
+        is_online: updateData.is_online,
+        is_stealth_mode: updateData.is_stealth_mode
+      };
+
+      const fallbackResult = await updateProfile(fallbackData);
+      error = fallbackResult.error;
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       if (!error) {
         toast.success(`Status set to ${statuses.find(s => s.id === status)?.label} (basic mode)`);
       }
@@ -124,7 +182,11 @@ export default function MoodPage() {
         setSelectedStatus((profile.presence_status as PresenceStatus) || 'online');
       }
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     setSaving(false);
   };
 
@@ -132,6 +194,7 @@ export default function MoodPage() {
 
   return (
     <ResponsiveLayout unreadCount={0}>
+<<<<<<< HEAD
       <div className="flex-1 flex flex-col px-4 pb-2 pt-4 overflow-y-auto">
         {/* Header with Back Button - Inside Main Content Only */}
         <motion.header 
@@ -200,10 +263,86 @@ export default function MoodPage() {
                     onClick={() => handleStatusSelect(status.id)}
                     disabled={saving}
                     className={`
+=======
+      <AppLayout>
+        <div className="flex-1 flex flex-col px-4 pt-4 no-scrollbar overflow-y-auto min-h-0 safe-area-pt safe-area-pb"
+          style={{
+            paddingBottom: 'calc(5rem + env(safe-area-inset-bottom, 1rem))'
+          }}
+        >
+          {/* Header with Back Button - Inside Main Content Only */}
+          <motion.header
+            className="flex items-center gap-3 mb-6 flex-shrink-0"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <button
+              onClick={() => navigate('/')}
+              className="p-2 rounded-xl hover:bg-secondary/50 transition-colors"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="w-5 h-5 text-foreground" />
+            </button>
+            <div className="flex-1">
+              <h1 className="text-xl lg:text-2xl font-bold text-foreground">Status & Presence</h1>
+              <p className="text-sm text-muted-foreground hidden lg:block">Set your availability status</p>
+            </div>
+          </motion.header>
+
+          <motion.div
+            className="flex-1 flex flex-col gap-5"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {/* Current Status Display */}
+            <motion.div
+              className="glass-card rounded-3xl p-6 text-center"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentStatus.id}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.5, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="flex justify-center mb-3"
+                  style={{ color: currentStatus.color }}
+                >
+                  {currentStatus.icon}
+                </motion.div>
+              </AnimatePresence>
+              <h2 className="text-xl font-semibold text-foreground mb-1">
+                {currentStatus.label}
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                {currentStatus.description}
+              </p>
+            </motion.div>
+
+            {/* Status Options */}
+            <div>
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">Set your status</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {statuses.map((status, index) => {
+                  const isSelected = selectedStatus === status.id;
+
+                  return (
+                    <motion.button
+                      key={status.id}
+                      onClick={() => handleStatusSelect(status.id)}
+                      disabled={saving}
+                      className={`
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                       relative p-4 rounded-2xl flex items-center gap-3 transition-all duration-300
                       ${isSelected ? 'ring-2 ring-offset-2 ring-offset-background' : 'glass-card hover:bg-secondary/50'}
                       ${saving ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                     `}
+<<<<<<< HEAD
                     style={{
                       backgroundColor: isSelected ? `${status.color}15` : undefined
                     }}
@@ -269,6 +408,74 @@ export default function MoodPage() {
         activeTab={activeTab}
         onTabChange={handleTabChange}
       />
+=======
+                      style={{
+                        backgroundColor: isSelected ? `${status.color}15` : undefined
+                      }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, delay: 0.03 * index }}
+                      whileHover={!saving ? { scale: 1.02 } : {}}
+                      whileTap={!saving ? { scale: 0.98 } : {}}
+                    >
+                      <div
+                        className="flex-shrink-0"
+                        style={{ color: status.color }}
+                      >
+                        {status.icon}
+                      </div>
+                      <div className="flex-1 text-left">
+                        <div className="font-medium text-foreground">{status.label}</div>
+                        <div className="text-xs text-muted-foreground">{status.description}</div>
+                      </div>
+                      {isSelected && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="flex-shrink-0"
+                          style={{ color: status.color }}
+                        >
+                          <Check className="w-5 h-5" />
+                        </motion.div>
+                      )}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Spotify Integration */}
+            <motion.div
+              className="glass-card rounded-2xl p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+                  <Music className="w-6 h-6 text-green-400" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-foreground">Connect Spotify</h3>
+                  <p className="text-xs text-muted-foreground">Show what you're listening to</p>
+                </div>
+                <button
+                  onClick={() => toast.info('Spotify connection coming soon!')}
+                  className="px-4 py-2 rounded-xl bg-green-500 text-white text-sm font-medium hover:bg-green-600 transition-colors"
+                >
+                  Connect
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <BottomNav
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
+      </AppLayout>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     </ResponsiveLayout>
   );
 }

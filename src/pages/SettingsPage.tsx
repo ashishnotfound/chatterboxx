@@ -4,24 +4,42 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { ResponsiveLayout } from '@/components/layout/ResponsiveLayout';
 import { SupportCreatorSection } from '@/components/settings/SupportCreatorSection';
 import {
+<<<<<<< HEAD
   ArrowLeft, 
   Bell, 
   Moon, 
   Globe, 
+=======
+  ArrowLeft,
+  Bell,
+  Moon,
+  Globe,
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   HelpCircle,
   FileText,
   Shield,
   ShieldOff,
   Trash2,
+<<<<<<< HEAD
   ChevronRight
+=======
+  ChevronRight,
+  Palette
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 } from 'lucide-react';
 
 const settingsGroups = [
   {
     title: 'Preferences',
     items: [
+<<<<<<< HEAD
       { icon: Bell, label: 'Notifications', description: 'Message, call & friend alerts', path: '/settings/notifications' },
       { icon: Moon, label: 'Appearance', description: 'Theme & display settings', path: '/settings/appearance' },
+=======
+      { icon: Palette, label: 'Customize Theme', description: 'Personalize background, colors & borders', path: '/customize' },
+      { icon: Moon, label: 'Appearance', description: 'Dark mode & display settings', path: '/settings/appearance' },
+      { icon: Bell, label: 'Notifications', description: 'Message, call & friend alerts', path: '/settings/notifications' },
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       { icon: Globe, label: 'Language', description: 'English', path: '/settings/language' },
     ]
   },
@@ -57,6 +75,7 @@ export default function SettingsPage() {
   return (
     <ResponsiveLayout>
       <AppLayout>
+<<<<<<< HEAD
         <div className="flex-1 flex flex-col overflow-y-auto max-w-4xl mx-auto w-full">
           {/* Header */}
           <motion.header 
@@ -65,6 +84,16 @@ export default function SettingsPage() {
             animate={{ y: 0, opacity: 1 }}
           >
             <button 
+=======
+        <div className="flex-1 flex flex-col overflow-y-auto max-w-4xl mx-auto w-full no-scrollbar">
+          {/* Header */}
+          <motion.header
+            className="px-4 lg:px-8 pt-6 pb-4 flex items-center gap-3 safe-area-pt"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+          >
+            <button
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               onClick={() => navigate(-1)}
               className="p-2 rounded-xl hover:bg-secondary/50 transition-colors lg:hidden"
             >
@@ -101,8 +130,13 @@ export default function SettingsPage() {
                           ${itemIndex !== group.items.length - 1 ? 'border-b border-border' : ''}
                         `}
                       >
+<<<<<<< HEAD
                         <item.icon 
                           className={`w-5 h-5 ${item.danger ? 'text-destructive' : 'text-primary'}`} 
+=======
+                        <item.icon
+                          className={`w-5 h-5 ${item.danger ? 'text-destructive' : 'text-primary'}`}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                         />
                         <div className="flex-1 text-left">
                           <span className={`font-medium ${item.danger ? 'text-destructive' : 'text-foreground'}`}>
@@ -122,7 +156,11 @@ export default function SettingsPage() {
             <SupportCreatorSection />
 
             {/* Version */}
+<<<<<<< HEAD
             <motion.p 
+=======
+            <motion.p
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               className="text-center text-xs text-muted-foreground pt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

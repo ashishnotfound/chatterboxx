@@ -2,9 +2,16 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { ArrowLeft, Check } from 'lucide-react';
+=======
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
+import { ArrowLeft, Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 interface Language {
   code: string;
@@ -27,12 +34,17 @@ const languages: Language[] = [
 export default function LanguagePage() {
   const navigate = useNavigate();
   const { profile, updateProfile } = useAuth();
+<<<<<<< HEAD
+=======
+  const { t, i18n } = useTranslation();
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (profile?.app_language) {
       setSelectedLanguage(profile.app_language);
+<<<<<<< HEAD
     }
   }, [profile]);
 
@@ -53,6 +65,36 @@ export default function LanguagePage() {
       toast.success(`Language set to ${lang?.name}`, {
         description: 'Full translation support coming soon!',
       });
+=======
+      if (i18n.language !== profile.app_language) {
+        i18n.changeLanguage(profile.app_language);
+      }
+    } else if (i18n.language) {
+      setSelectedLanguage(i18n.language.split('-')[0]);
+    }
+  }, [profile, i18n]);
+
+  const handleSelectLanguage = async (code: string) => {
+    if (code === selectedLanguage) return;
+
+    const prevLang = selectedLanguage;
+    setSelectedLanguage(code);
+    setSaving(true);
+
+    // Change language in i18n
+    await i18n.changeLanguage(code);
+
+    // Save to profile
+    const { error } = await updateProfile({ app_language: code });
+
+    if (error) {
+      toast.error(t('settings.failed_to_save_setting'));
+      setSelectedLanguage(prevLang);
+      await i18n.changeLanguage(prevLang);
+    } else {
+      const lang = languages.find(l => l.code === code);
+      toast.success(`${t('settings.language')} updated to ${lang?.name}`);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     }
     setSaving(false);
   };
@@ -61,23 +103,39 @@ export default function LanguagePage() {
     <AppLayout>
       <div className="flex-1 flex flex-col overflow-y-auto">
         {/* Header */}
+<<<<<<< HEAD
         <motion.header 
+=======
+        <motion.header
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           className="px-4 py-4 flex items-center gap-3"
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
         >
+<<<<<<< HEAD
           <button 
+=======
+          <button
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
             onClick={() => navigate(-1)}
             className="p-2 rounded-xl hover:bg-secondary/50 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-foreground" />
           </button>
+<<<<<<< HEAD
           <h1 className="text-xl font-bold text-foreground">Language</h1>
+=======
+          <h1 className="text-xl font-bold text-foreground">{t('settings.language')}</h1>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
         </motion.header>
 
         <div className="px-4 pb-8 space-y-4">
           {/* Current Language */}
+<<<<<<< HEAD
           <motion.div 
+=======
+          <motion.div
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
             className="glass-card rounded-2xl p-6 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -86,11 +144,19 @@ export default function LanguagePage() {
             <h2 className="text-lg font-semibold text-foreground mb-1">
               {languages.find(l => l.code === selectedLanguage)?.name}
             </h2>
+<<<<<<< HEAD
             <p className="text-sm text-muted-foreground">Current language</p>
           </motion.div>
 
           {/* Language List */}
           <motion.div 
+=======
+            <p className="text-sm text-muted-foreground">{t('common.active')}</p>
+          </motion.div>
+
+          {/* Language List */}
+          <motion.div
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
             className="glass-card rounded-2xl overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -101,9 +167,14 @@ export default function LanguagePage() {
                 key={lang.code}
                 onClick={() => handleSelectLanguage(lang.code)}
                 disabled={saving}
+<<<<<<< HEAD
                 className={`w-full p-4 flex items-center gap-4 hover:bg-secondary/30 transition-colors ${
                   index !== languages.length - 1 ? 'border-b border-border' : ''
                 } ${saving ? 'opacity-50' : ''}`}
+=======
+                className={`w-full p-4 flex items-center gap-4 hover:bg-secondary/30 transition-colors ${index !== languages.length - 1 ? 'border-b border-border' : ''
+                  } ${saving ? 'opacity-50' : ''}`}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               >
                 <span className="text-2xl">{lang.flag}</span>
                 <div className="flex-1 text-left">
@@ -119,7 +190,11 @@ export default function LanguagePage() {
             ))}
           </motion.div>
 
+<<<<<<< HEAD
           <motion.p 
+=======
+          <motion.p
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
             className="text-center text-xs text-muted-foreground"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -131,4 +206,8 @@ export default function LanguagePage() {
       </div>
     </AppLayout>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)

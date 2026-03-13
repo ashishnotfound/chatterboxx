@@ -2,8 +2,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+<<<<<<< HEAD
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+=======
+import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthProvider";
+import { CallProvider } from "@/contexts/CallProvider";
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -11,6 +17,10 @@ import { CapacitorErrorBoundary } from "@/components/error/CapacitorErrorBoundar
 import { NetworkStatus } from "@/components/common/NetworkStatus";
 import { BackButtonHandler } from "@/components/navigation/BackButtonHandler";
 import { isCapacitorNative } from "@/utils/capacitor";
+<<<<<<< HEAD
+=======
+import { CallUI } from "@/components/call/CallUI";
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import HomePage from "./pages/HomePage";
 import MoodPage from "./pages/MoodPage";
 import ChatPage from "./pages/ChatPage";
@@ -35,15 +45,25 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: (failureCount, error) => {
+<<<<<<< HEAD
         // Don't retry on 4xx errors
         if (error && typeof error === 'object' && 'status' in error) {
           const status = (error as any).status;
+=======
+        if (error && typeof error === 'object' && 'status' in error) {
+          const status = (error as { status?: number }).status;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           if (status >= 400 && status < 500) return false;
         }
         return failureCount < 3;
       },
+<<<<<<< HEAD
       staleTime: 5 * 60 * 1000, // 5 minutes
       gcTime: 10 * 60 * 1000, // 10 minutes (replaced cacheTime)
+=======
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     },
     mutations: {
       retry: 1,
@@ -51,6 +71,7 @@ const queryClient = new QueryClient({
   },
 });
 
+<<<<<<< HEAD
 // Use hash router for Capacitor compatibility
 const Router = isCapacitorNative() ? BrowserRouter : BrowserRouter;
 
@@ -98,6 +119,62 @@ const App = () => (
     </QueryClientProvider>
   </ErrorBoundary>
 </CapacitorErrorBoundary>
+=======
+const Router = isCapacitorNative() ? HashRouter : BrowserRouter;
+
+import { LanguageSync } from "@/components/common/LanguageSync";
+import { NotificationSync } from "@/components/common/NotificationSync";
+
+const App = () => (
+  <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <CapacitorErrorBoundary>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <CallProvider>
+              <LanguageSync />
+              <NotificationSync />
+              <ThemeProvider>
+                <TooltipProvider>
+                  <CallUI />
+                  <NetworkStatus />
+                  <BackButtonHandler>
+                    <Toaster />
+                    <Sonner position="top-center" />
+                    <ErrorBoundary>
+                      <Routes>
+                        <Route path="/auth" element={<AuthPage />} />
+                        <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+                        <Route path="/status" element={<ProtectedRoute><MoodPage /></ProtectedRoute>} />
+                        <Route path="/chat" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+                        <Route path="/chat/:chatId" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />
+                        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                        <Route path="/profile/edit" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
+                        <Route path="/pro" element={<ProtectedRoute><ProPage /></ProtectedRoute>} />
+                        <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+                        <Route path="/settings/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+                        <Route path="/settings/appearance" element={<ProtectedRoute><AppearancePage /></ProtectedRoute>} />
+                        <Route path="/settings/language" element={<ProtectedRoute><LanguagePage /></ProtectedRoute>} />
+                        <Route path="/settings/privacy" element={<ProtectedRoute><PrivacyPage /></ProtectedRoute>} />
+                        <Route path="/settings/privacy/blocked" element={<ProtectedRoute><BlockedUsersPage /></ProtectedRoute>} />
+                        <Route path="/settings/help" element={<ProtectedRoute><HelpPage /></ProtectedRoute>} />
+                        <Route path="/settings/terms" element={<ProtectedRoute><TermsPage /></ProtectedRoute>} />
+                        <Route path="/settings/delete-account" element={<ProtectedRoute><DeleteAccountPage /></ProtectedRoute>} />
+                        <Route path="/friends" element={<ProtectedRoute><FriendsPage /></ProtectedRoute>} />
+                        <Route path="/customize" element={<ProtectedRoute><CustomizePage /></ProtectedRoute>} />
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </ErrorBoundary>
+                  </BackButtonHandler>
+                </TooltipProvider>
+              </ThemeProvider>
+            </CallProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
+    </CapacitorErrorBoundary>
+  </Router>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 );
 
 export default App;

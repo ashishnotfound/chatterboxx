@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { formatDistanceToNow, differenceInMinutes } from 'date-fns';
+=======
+import { formatDistanceToNow, differenceInMinutes, isYesterday, isToday, isThisYear, format } from 'date-fns';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 export type PresenceStatus = 'online' | 'idle' | 'dnd' | 'invisible';
 
@@ -26,6 +30,7 @@ export function formatLastSeen(
 
   try {
     const lastSeenDate = new Date(lastSeen);
+<<<<<<< HEAD
     const minutesAgo = differenceInMinutes(new Date(), lastSeenDate);
 
     // Just now
@@ -40,6 +45,32 @@ export function formatLastSeen(
 
     // Use relative time
     return `Last seen ${formatDistanceToNow(lastSeenDate, { addSuffix: false })} ago`;
+=======
+    const now = new Date();
+    const diffInMinutes = Math.floor((now.getTime() - lastSeenDate.getTime()) / (1000 * 60));
+
+    if (diffInMinutes < 1) {
+      return 'last seen just now';
+    }
+
+    if (diffInMinutes < 60) {
+      return `last seen ${diffInMinutes} ${diffInMinutes === 1 ? 'min' : 'mins'} ago`;
+    }
+
+    if (isToday(lastSeenDate)) {
+      return `last seen today at ${format(lastSeenDate, 'h:mm a')}`;
+    }
+
+    if (isYesterday(lastSeenDate)) {
+      return `last seen yesterday at ${format(lastSeenDate, 'h:mm a')}`;
+    }
+
+    if (isThisYear(lastSeenDate)) {
+      return `last seen ${format(lastSeenDate, 'd MMM')} at ${format(lastSeenDate, 'h:mm a')}`;
+    }
+
+    return `last seen ${format(lastSeenDate, 'd MMM yyyy')}`;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   } catch {
     return 'Unknown';
   }
@@ -106,7 +137,11 @@ export function shouldShowAsOnline(
   }
 
   // Online, idle, and dnd all show as "online" (but with different indicators)
+<<<<<<< HEAD
   return presenceStatus !== 'invisible';
+=======
+  return true;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 }
 
 /**

@@ -1,0 +1,39 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="white"/>
+  <g transform="translate(256, 256)">
+    <!-- Center cube -->
+    <g transform="translate(0, 0)">
+      <path d="M 0,-40 L 35,-20 L 35,20 L 0,40 L -35,20 L -35,-20 Z" fill="black" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L 35,-20 L 0,0 Z" fill="black" opacity="0.7" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L -35,-20 L 0,0 Z" fill="black" opacity="0.5" stroke="white" stroke-width="3"/>
+    </g>
+    
+    <!-- Top left cube -->
+    <g transform="translate(-70, -40)">
+      <path d="M 0,-40 L 35,-20 L 35,20 L 0,40 L -35,20 L -35,-20 Z" fill="black" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L 35,-20 L 0,0 Z" fill="black" opacity="0.7" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L -35,-20 L 0,0 Z" fill="black" opacity="0.5" stroke="white" stroke-width="3"/>
+    </g>
+    
+    <!-- Top right cube -->
+    <g transform="translate(70, -40)">
+      <path d="M 0,-40 L 35,-20 L 35,20 L 0,40 L -35,20 L -35,-20 Z" fill="black" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L 35,-20 L 0,0 Z" fill="black" opacity="0.7" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L -35,-20 L 0,0 Z" fill="black" opacity="0.5" stroke="white" stroke-width="3"/>
+    </g>
+    
+    <!-- Bottom left cube -->
+    <g transform="translate(-70, 40)">
+      <path d="M 0,-40 L 35,-20 L 35,20 L 0,40 L -35,20 L -35,-20 Z" fill="black" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L 35,-20 L 0,0 Z" fill="black" opacity="0.7" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L -35,-20 L 0,0 Z" fill="black" opacity="0.5" stroke="white" stroke-width="3"/>
+    </g>
+    
+    <!-- Bottom right cube -->
+    <g transform="translate(70, 40)">
+      <path d="M 0,-40 L 35,-20 L 35,20 L 0,40 L -35,20 L -35,-20 Z" fill="black" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L 35,-20 L 0,0 Z" fill="black" opacity="0.7" stroke="white" stroke-width="3"/>
+      <path d="M 0,-40 L -35,-20 L 0,0 Z" fill="black" opacity="0.5" stroke="white" stroke-width="3"/>
+    </g>
+  </g>
+</svg>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useKeyboardShortcuts, chatShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -39,10 +40,17 @@ interface OtherUserData {
 }
 
 type ChatError = 'not_found' | 'not_participant' | 'unknown' | null;
+=======
+import { useNavigate, useParams } from 'react-router-dom';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { ResponsiveLayout } from '@/components/layout/ResponsiveLayout';
+import { ChatWindow } from '@/components/chat/ChatWindow';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 export default function ChatPage() {
   const navigate = useNavigate();
   const { chatId } = useParams();
+<<<<<<< HEAD
   const { user, profile } = useAuth();
   const viewerPresenceStatus = (profile?.presence_status || 'online') as PresenceStatus;
   
@@ -509,5 +517,19 @@ export default function ChatPage() {
         onSubmit={handleSubmitReport}
       />
     </>
+=======
+
+  if (!chatId) {
+    navigate('/chat');
+    return null;
+  }
+
+  return (
+    <ResponsiveLayout>
+      <AppLayout>
+        <ChatWindow chatId={chatId} onBack={() => navigate(-1)} />
+      </AppLayout>
+    </ResponsiveLayout>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   );
 }

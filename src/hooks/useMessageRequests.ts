@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -23,7 +28,11 @@ export function useMessageRequests() {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch message requests
+<<<<<<< HEAD
   const fetchRequests = async () => {
+=======
+  const fetchRequests = useCallback(async () => {
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     if (!user?.id) return;
 
     setLoading(true);
@@ -61,7 +70,11 @@ export function useMessageRequests() {
     } finally {
       setLoading(false);
     }
+<<<<<<< HEAD
   };
+=======
+  }, [user?.id]);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   // Accept a message request
   const acceptRequest = async (requestId: string) => {
@@ -81,7 +94,10 @@ export function useMessageRequests() {
       const { data: chatData, error: chatError } = await supabase
         .from('chats')
         .insert({
+<<<<<<< HEAD
           created_by: user.id,
+=======
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           is_group: false,
         })
         .select()
@@ -200,12 +216,20 @@ export function useMessageRequests() {
     return () => {
       supabase.removeChannel(channel);
     };
+<<<<<<< HEAD
   }, [user?.id]);
+=======
+  }, [user?.id, fetchRequests]);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   // Initial fetch
   useEffect(() => {
     fetchRequests();
+<<<<<<< HEAD
   }, [user?.id]);
+=======
+  }, [fetchRequests]);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   return {
     requests,

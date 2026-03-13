@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Shield, ShieldOff, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { Avatar } from '@/components/ui/user-avatar';
 import { Button } from '@/components/ui/button';
 import { useFriends } from '@/hooks/useFriends';

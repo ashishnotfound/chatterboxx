@@ -12,6 +12,10 @@ export function ChatWallpaperSettings() {
     isLoading,
     error,
     uploadWallpaper,
+<<<<<<< HEAD
+=======
+    setLocalWallpaper,
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     removeWallpaper,
   } = useChatWallpaper();
 
@@ -22,10 +26,18 @@ export function ChatWallpaperSettings() {
     if (!file) return;
 
     try {
+<<<<<<< HEAD
       await uploadWallpaper(file);
       toast.success('Wallpaper updated successfully!');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to upload wallpaper');
+=======
+      // Use local wallpaper setting instead of upload
+      await setLocalWallpaper(file);
+      toast.success('Wallpaper updated locally!');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to set wallpaper');
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     }
 
     // Reset file input
@@ -56,7 +68,13 @@ export function ChatWallpaperSettings() {
       <div>
         <h3 className="text-lg font-semibold mb-2">Chat Wallpaper</h3>
         <p className="text-sm text-muted-foreground">
+<<<<<<< HEAD
           Customize your chat background with a personal image
+=======
+          Customize your chat background with a personal image.
+          <br />
+          <span className="text-xs opacity-70">Images are stored locally on your device.</span>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
         </p>
       </div>
 
@@ -80,16 +98,28 @@ export function ChatWallpaperSettings() {
               <RefreshCw className="w-6 h-6 animate-spin text-muted-foreground" />
             </div>
           ) : wallpaperUrl ? (
+<<<<<<< HEAD
             <div className="relative group">
               <img
                 src={wallpaperUrl}
                 alt="Chat wallpaper"
                 className="w-full h-48 object-cover rounded-lg"
+=======
+            <div className="relative group overflow-hidden rounded-lg">
+              <img
+                src={wallpaperUrl}
+                alt="Chat wallpaper"
+                className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                 onError={(e) => {
                   console.error('Wallpaper failed to load:', e);
                 }}
               />
+<<<<<<< HEAD
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg" />
+=======
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               <Button
                 size="sm"
                 variant="destructive"
@@ -113,6 +143,7 @@ export function ChatWallpaperSettings() {
 
       {/* Upload Controls */}
       <div className="space-y-3">
+<<<<<<< HEAD
         <div>
           <label className="text-sm font-medium">Upload New Wallpaper</label>
           <p className="text-xs text-muted-foreground mt-1">
@@ -149,17 +180,58 @@ export function ChatWallpaperSettings() {
               Reset
             </Button>
           )}
+=======
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium">Select Image</label>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button
+              onClick={handleUploadClick}
+              disabled={isUploading}
+              className="flex-1"
+            >
+              {isUploading ? (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Choose from Gallery
+                </>
+              )}
+            </Button>
+
+            {wallpaperUrl && (
+              <Button
+                variant="outline"
+                onClick={handleRemoveWallpaper}
+                disabled={isUploading}
+              >
+                Remove Wallpaper
+              </Button>
+            )}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            JPG or PNG. Images are compressed and stored locally.
+          </p>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
         </div>
 
         {/* Hidden File Input */}
         <input
           ref={fileInputRef}
           type="file"
+<<<<<<< HEAD
           accept="image/jpeg,image/png"
+=======
+          accept="image/jpeg,image/png,image/webp"
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           onChange={handleFileSelect}
           className="hidden"
         />
       </div>
+<<<<<<< HEAD
 
       {/* Preview Info */}
       {wallpaperUrl && (
@@ -174,6 +246,8 @@ export function ChatWallpaperSettings() {
           </p>
         </motion.div>
       )}
+=======
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     </motion.div>
   );
 }

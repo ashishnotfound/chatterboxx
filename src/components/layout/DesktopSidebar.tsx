@@ -2,7 +2,11 @@ import { motion } from 'framer-motion';
 import { Home, Heart, MessageCircle, User, Settings, Sparkles, Users, Crown } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { Avatar } from '@/components/ui/user-avatar';
 
 const navItems = [

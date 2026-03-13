@@ -3,7 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Eye, Send, ChevronLeft, ChevronRight, Users, Volume2, VolumeX } from 'lucide-react';
 import { Story } from '@/hooks/useStories';
 import { StoryInteractions } from './StoryInteractions';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 interface StoryViewerProps {
   stories: Story[];
@@ -18,12 +22,21 @@ interface StoryViewerProps {
   onReply?: (commentId: string, content: string) => void;
 }
 
+<<<<<<< HEAD
 export function StoryViewer({ 
   stories, 
   currentIndex, 
   onClose, 
   onNext, 
   onPrevious, 
+=======
+export function StoryViewer({
+  stories,
+  currentIndex,
+  onClose,
+  onNext,
+  onPrevious,
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   onView,
   onLike,
   onComment,
@@ -95,12 +108,23 @@ export function StoryViewer({
     <AnimatePresence>
       <motion.div
         className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+<<<<<<< HEAD
+=======
+        style={{ height: '100dvh' }}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
         {/* Progress Bar */}
+<<<<<<< HEAD
         <div className="absolute top-4 left-4 right-4 flex gap-1 z-10">
+=======
+        <div
+          className="absolute left-4 right-4 flex gap-1 z-10"
+          style={{ top: 'max(1rem, env(safe-area-inset-top, 20px))' }}
+        >
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           {stories.map((_, index) => (
             <div
               key={index}
@@ -109,7 +133,11 @@ export function StoryViewer({
               <motion.div
                 className="h-full bg-white"
                 initial={{ width: index < currentIndex ? '100%' : '0%' }}
+<<<<<<< HEAD
                 animate={{ 
+=======
+                animate={{
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                   width: index === currentIndex ? `${progress}%` : index < currentIndex ? '100%' : '0%'
                 }}
                 transition={{ duration: 0.1 }}
@@ -119,7 +147,14 @@ export function StoryViewer({
         </div>
 
         {/* Header */}
+<<<<<<< HEAD
         <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+=======
+        <div
+          className="absolute left-4 right-4 flex items-center justify-between z-10"
+          style={{ top: 'calc(max(1rem, env(safe-area-inset-top, 20px)) + 1.5rem)' }}
+        >
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 p-0.5">
               <img
@@ -135,13 +170,21 @@ export function StoryViewer({
               </p>
             </div>
           </div>
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 text-white/70 text-sm">
               <Eye className="w-4 h-4" />
               <span>{currentStory.viewers.length}</span>
             </div>
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
             {/* Viewers button for own stories */}
             {isOwnStory && currentStory.viewers.length > 0 && (
               <button
@@ -152,7 +195,11 @@ export function StoryViewer({
                 <span>Viewers</span>
               </button>
             )}
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
             <button
               onClick={onClose}
               className="p-2 rounded-full hover:bg-white/10 transition-colors"
@@ -318,7 +365,11 @@ export function StoryViewer({
                   <X className="w-4 h-4 text-white" />
                 </button>
               </div>
+<<<<<<< HEAD
               
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               <div className="space-y-2">
                 {currentStory.viewers.length === 0 ? (
                   <p className="text-white/50 text-sm text-center">No viewers yet</p>

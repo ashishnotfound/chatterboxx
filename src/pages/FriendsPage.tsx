@@ -1,10 +1,17 @@
+<<<<<<< HEAD
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+=======
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate, useLocation } from 'react-router-dom';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { AppLayout } from '@/components/layout/AppLayout';
 import { ResponsiveLayout } from '@/components/layout/ResponsiveLayout';
 import { Avatar } from '@/components/ui/user-avatar';
 import { useFriends, useSearchUsers } from '@/hooks/useFriends';
+<<<<<<< HEAD
 import { useChats } from '@/hooks/useChats';
 import { useAuth } from '@/contexts/AuthContext';
 import { User } from '@/types/chat';
@@ -19,18 +26,52 @@ import {
   Users,
   MessageCircle
 } from 'lucide-react';
+=======
+import { useCall } from '@/hooks/useCall';
+import { useChats } from '@/hooks/useChats';
+import { useAuth } from '@/hooks/useAuth';
+import { User } from '@/types/chat';
+import { ProfileData } from '@/types/auth';
+import { toast } from 'sonner';
+import { getPresenceStatusText, getPresenceStatusColor, getEffectivePresenceStatus, type PresenceStatus } from '@/utils/presence';
+import {
+  ArrowLeft,
+  Search,
+  UserPlus,
+  Check,
+  X,
+  Users,
+  MessageCircle,
+  Phone,
+  Video as VideoIcon
+} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 type Tab = 'friends' | 'requests' | 'search';
 
 export default function FriendsPage() {
   const navigate = useNavigate();
+<<<<<<< HEAD
   const [activeTab, setActiveTab] = useState<Tab>('friends');
   const [searchQuery, setSearchQuery] = useState('');
   
+=======
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<Tab>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tabParam = params.get('tab') as Tab;
+    if (tabParam && ['friends', 'requests', 'search'].includes(tabParam)) return tabParam;
+    return 'friends';
+  });
+  const [searchQuery, setSearchQuery] = useState('');
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   const { profile } = useAuth();
   const { friends, requests, loading, acceptRequest, declineRequest, sendFriendRequest } = useFriends();
   const { users: searchResults, loading: searchLoading } = useSearchUsers(searchQuery);
   const { createChat } = useChats();
+<<<<<<< HEAD
   
   // Get viewer's presence status
   const viewerPresenceStatus = (profile?.presence_status || 'online') as PresenceStatus;
@@ -41,6 +82,34 @@ export default function FriendsPage() {
       toast.error('Failed to accept request');
     } else {
       toast.success('Friend request accepted!');
+=======
+  const { startCall } = useCall();
+  const location = useLocation();
+
+  // Get viewer's presence status
+  const viewerPresenceStatus = (profile?.presence_status || 'online') as PresenceStatus;
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tabParam = params.get('tab') as Tab;
+    if (tabParam && ['friends', 'requests', 'search'].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, [location.search]);
+
+  const handleAcceptRequest = async (requestId: string) => {
+    try {
+      const { error } = await acceptRequest(requestId);
+      if (error) {
+        toast.error(`${t('failed_to_accept_request', 'Failed to accept request')}: ${error.message}`);
+        console.error('Detailed accept error:', error);
+      } else {
+        toast.success(t('request_accepted', 'Friend request accepted!'));
+      }
+    } catch (err) {
+      console.error('Handler error:', err);
+      toast.error('An unexpected error occurred');
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     }
   };
 
@@ -77,10 +146,26 @@ export default function FriendsPage() {
     }
   };
 
+<<<<<<< HEAD
   const createMockUserForAvatar = (profileData: any): User => {
     const userPresenceStatus = (profileData.presence_status || 'online') as PresenceStatus;
     const effectiveStatus = getEffectivePresenceStatus(userPresenceStatus, viewerPresenceStatus);
     
+=======
+  const handleCall = async (friendId: string, username: string, avatarUrl: string | null, type: 'audio' | 'video') => {
+    const { error, chatId } = await createChat(friendId);
+    if (error) {
+      toast.error('Failed to initialize call');
+    } else if (chatId) {
+      startCall(friendId, username, avatarUrl, chatId, type);
+    }
+  };
+
+  const createMockUserForAvatar = (profileData: Partial<ProfileData>): User => {
+    const userPresenceStatus = (profileData.presence_status || 'online') as PresenceStatus;
+    const effectiveStatus = getEffectivePresenceStatus(userPresenceStatus, viewerPresenceStatus);
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     return {
       id: profileData.id,
       username: profileData.username,
@@ -90,23 +175,39 @@ export default function FriendsPage() {
       isOnline: effectiveStatus !== 'invisible',
       presenceStatus: effectiveStatus,
       isStealthMode: profileData.is_stealth_mode || false,
+<<<<<<< HEAD
       lastSeen: profileData.last_seen,
+=======
+      lastSeen: profileData.last_seen ? new Date(profileData.last_seen) : undefined,
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       streak: 0,
       uptime: 0,
       createdAt: new Date(),
     };
   };
 
+<<<<<<< HEAD
   const getStatusText = (profileData: any): string => {
+=======
+  const getStatusText = (profileData: Partial<ProfileData>): string => {
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     const userPresenceStatus = (profileData.presence_status || 'online') as PresenceStatus;
     return getPresenceStatusText(
       userPresenceStatus,
       viewerPresenceStatus,
+<<<<<<< HEAD
       profileData.last_seen
     );
   };
 
   const getStatusColor = (profileData: any): string => {
+=======
+      profileData.last_seen || null
+    );
+  };
+
+  const getStatusColor = (profileData: Partial<ProfileData>): string => {
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     const userPresenceStatus = (profileData.presence_status || 'online') as PresenceStatus;
     const effectiveStatus = getEffectivePresenceStatus(userPresenceStatus, viewerPresenceStatus);
     return getPresenceStatusColor(effectiveStatus);
@@ -117,20 +218,33 @@ export default function FriendsPage() {
       <AppLayout>
         <div className="flex-1 flex flex-col overflow-hidden max-w-4xl mx-auto w-full">
           {/* Header */}
+<<<<<<< HEAD
           <motion.header 
+=======
+          <motion.header
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
             className="px-4 lg:px-8 py-4 flex items-center gap-3"
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
           >
+<<<<<<< HEAD
             <button 
+=======
+            <button
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               onClick={() => navigate(-1)}
               className="p-2 rounded-xl hover:bg-secondary/50 transition-colors lg:hidden"
             >
               <ArrowLeft className="w-5 h-5 text-foreground" />
             </button>
             <div className="flex-1">
+<<<<<<< HEAD
               <h1 className="text-xl lg:text-2xl font-bold text-foreground">Friends</h1>
               <p className="text-sm text-muted-foreground hidden lg:block">Manage your connections</p>
+=======
+              <h1 className="text-xl lg:text-2xl font-bold text-foreground">{t('friends', 'Friends')}</h1>
+              <p className="text-sm text-muted-foreground hidden lg:block">{t('manage_connections', 'Manage your connections')}</p>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
             </div>
           </motion.header>
 
@@ -146,7 +260,11 @@ export default function FriendsPage() {
                   if (e.target.value.length >= 2) setActiveTab('search');
                   else if (activeTab === 'search') setActiveTab('friends');
                 }}
+<<<<<<< HEAD
                 placeholder="Search users by username..."
+=======
+                placeholder={t('search_users_placeholder', 'Search users by username...')}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                 className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none lg:text-lg"
               />
             </div>
@@ -157,16 +275,24 @@ export default function FriendsPage() {
             <div className="glass-card rounded-2xl p-1 flex">
               <button
                 onClick={() => { setActiveTab('friends'); setSearchQuery(''); }}
+<<<<<<< HEAD
                 className={`flex-1 py-2 lg:py-3 rounded-xl text-sm lg:text-base font-medium transition-all ${
                   activeTab === 'friends' 
                     ? 'bg-primary text-primary-foreground' 
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
+=======
+                className={`flex-1 py-2 lg:py-3 rounded-xl text-sm lg:text-base font-medium transition-all ${activeTab === 'friends'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+                  }`}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               >
                 Friends ({friends.length})
               </button>
               <button
                 onClick={() => { setActiveTab('requests'); setSearchQuery(''); }}
+<<<<<<< HEAD
                 className={`flex-1 py-2 lg:py-3 rounded-xl text-sm lg:text-base font-medium transition-all relative ${
                   activeTab === 'requests' 
                     ? 'bg-primary text-primary-foreground' 
@@ -174,6 +300,14 @@ export default function FriendsPage() {
                 }`}
               >
                 Requests
+=======
+                className={`flex-1 py-2 lg:py-3 rounded-xl text-sm lg:text-base font-medium transition-all relative ${activeTab === 'requests'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+                  }`}
+              >
+                {t('requests', 'Requests')}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                 {requests.length > 0 && (
                   <span className="absolute top-1 right-4 w-2 h-2 rounded-full bg-accent" />
                 )}
@@ -210,10 +344,17 @@ export default function FriendsPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
                       >
+<<<<<<< HEAD
                         <Avatar 
                           user={createMockUserForAvatar(user)} 
                           size="md" 
                           showGlow={user.subscription_tier === 'pro'} 
+=======
+                        <Avatar
+                          user={createMockUserForAvatar(user)}
+                          size="md"
+                          showGlow={user.subscription_tier === 'pro'}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                           showMood={false}
                           viewerPresenceStatus={viewerPresenceStatus}
                         />
@@ -263,10 +404,17 @@ export default function FriendsPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
                       >
+<<<<<<< HEAD
                         <Avatar 
                           user={createMockUserForAvatar(friend.profile)} 
                           size="md" 
                           showGlow={friend.profile.subscription_tier === 'pro'} 
+=======
+                        <Avatar
+                          user={createMockUserForAvatar(friend.profile)}
+                          size="md"
+                          showGlow={friend.profile.subscription_tier === 'pro'}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                           showMood={false}
                           viewerPresenceStatus={viewerPresenceStatus}
                         />
@@ -276,7 +424,11 @@ export default function FriendsPage() {
                             {friend.profile.subscription_tier === 'pro' && <span className="pro-badge">PRO</span>}
                           </div>
                           <div className="flex items-center gap-2">
+<<<<<<< HEAD
                             <span 
+=======
+                            <span
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                               className="w-2 h-2 rounded-full"
                               style={{ backgroundColor: getStatusColor(friend.profile) }}
                             />
@@ -287,8 +439,28 @@ export default function FriendsPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <button
+<<<<<<< HEAD
                             onClick={() => handleStartChat(friend.profile.id)}
                             className="p-2 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+=======
+                            onClick={() => handleCall(friend.profile.id, friend.profile.username, friend.profile.avatar_url, 'audio')}
+                            className="p-2 rounded-xl bg-secondary/50 text-foreground hover:bg-secondary transition-colors"
+                            title="Audio Call"
+                          >
+                            <Phone className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => handleCall(friend.profile.id, friend.profile.username, friend.profile.avatar_url, 'video')}
+                            className="p-2 rounded-xl bg-secondary/50 text-foreground hover:bg-secondary transition-colors"
+                            title="Video Call"
+                          >
+                            <VideoIcon className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={() => handleStartChat(friend.profile.id)}
+                            className="p-2 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                            title="Message"
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                           >
                             <MessageCircle className="w-5 h-5" />
                           </button>
@@ -348,13 +520,21 @@ export default function FriendsPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <button
+<<<<<<< HEAD
                             onClick={() => acceptRequest(request.id)}
+=======
+                            onClick={() => handleAcceptRequest(request.id)}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                             className="p-2 rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                           >
                             <Check className="w-5 h-5" />
                           </button>
                           <button
+<<<<<<< HEAD
                             onClick={() => declineRequest(request.id)}
+=======
+                            onClick={() => handleDeclineRequest(request.id)}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                             className="p-2 rounded-xl bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
                           >
                             <X className="w-5 h-5" />
@@ -370,5 +550,9 @@ export default function FriendsPage() {
         </div>
       </AppLayout>
     </ResponsiveLayout>
+<<<<<<< HEAD
 );
+=======
+  );
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 }

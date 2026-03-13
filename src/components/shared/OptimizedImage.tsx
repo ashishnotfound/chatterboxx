@@ -24,6 +24,15 @@ export function OptimizedImage({
   const imgRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+<<<<<<< HEAD
+=======
+    // If it's a local blob URL (optimistic), show it immediately
+    if (src.startsWith('blob:')) {
+      setIsInView(true);
+      return;
+    }
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     const loader = new LazyLoader();
     if (imgRef.current) {
       loader.observe(imgRef.current, () => {
@@ -31,11 +40,19 @@ export function OptimizedImage({
       });
     }
     return () => loader.disconnect();
+<<<<<<< HEAD
   }, []);
 
   return (
     <div 
       ref={imgRef} 
+=======
+  }, [src]);
+
+  return (
+    <div
+      ref={imgRef}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       className={cn("relative overflow-hidden bg-muted/20", containerClassName)}
     >
       {isInView && !error && (
@@ -44,15 +61,32 @@ export function OptimizedImage({
           alt={alt}
           onLoad={() => setIsLoaded(true)}
           onError={() => setError(true)}
+<<<<<<< HEAD
+=======
+          loading="eager"
+          decoding="async"
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           className={cn(
             "transition-opacity duration-500",
             isLoaded ? "opacity-100" : "opacity-0",
             className
           )}
+<<<<<<< HEAD
           {...props}
         />
       )}
       
+=======
+          style={{
+            imageRendering: 'auto',
+            objectFit: 'cover',
+            ...props.style
+          } as React.CSSProperties}
+          {...props}
+        />
+      )}
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       {!isLoaded && !error && (
         <div className="absolute inset-0 flex items-center justify-center">
           <Skeleton className="w-full h-full" />

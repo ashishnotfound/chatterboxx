@@ -2,7 +2,11 @@ import { ReactNode, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useChats, ChatData } from '@/hooks/useChats';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { Avatar } from '@/components/ui/user-avatar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useKeyboardShortcuts, chatShortcuts } from '@/hooks/useKeyboardShortcuts';

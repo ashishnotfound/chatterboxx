@@ -15,6 +15,11 @@ export interface User {
   spotifyTrack?: SpotifyTrack;
   streak: number;
   uptime: number; // in minutes
+<<<<<<< HEAD
+=======
+  mood?: string;
+  moodEmoji?: string;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   createdAt: Date;
 }
 
@@ -72,7 +77,11 @@ export interface Subscription {
   features: ProFeature[];
 }
 
+<<<<<<< HEAD
 export type ProFeature = 
+=======
+export type ProFeature =
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   | 'unlimited_friends'
   | 'custom_backgrounds'
   | 'animated_avatars'

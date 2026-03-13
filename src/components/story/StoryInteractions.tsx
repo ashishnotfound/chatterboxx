@@ -4,7 +4,11 @@ import { Heart, MessageCircle, Send, X, MoreHorizontal } from 'lucide-react';
 import { Avatar } from '@/components/ui/user-avatar';
 import { Button } from '@/components/ui/button';
 import { Story, StoryComment } from '@/hooks/useStories';
+<<<<<<< HEAD
 import { useAuth } from '@/contexts/AuthContext';
+=======
+import { useAuth } from '@/hooks/useAuth';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 interface StoryInteractionsProps {
   story: Story;

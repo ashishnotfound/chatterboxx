@@ -28,7 +28,11 @@ export class PerformanceMonitor {
   measureAPI(apiCall: string, startTime: number) {
     const duration = performance.now() - startTime;
     this.metrics.set(`${apiCall}-api`, duration);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     // Log slow API calls
     if (duration > 1000) {
       console.warn(`Slow API call: ${apiCall} took ${duration}ms`);
@@ -48,7 +52,11 @@ export class PerformanceMonitor {
   // Monitor memory usage
   getMemoryUsage() {
     if ('memory' in performance) {
+<<<<<<< HEAD
       const memory = (performance as any).memory;
+=======
+      const memory = performance.memory;
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       return {
         used: Math.round(memory.usedJSHeapSize / 1048576), // MB
         total: Math.round(memory.totalJSHeapSize / 1048576), // MB
@@ -273,12 +281,20 @@ export class SecurityUtils {
 }
 
 // Debounce utility for performance
+<<<<<<< HEAD
 export function debounce<T extends (...args: any[]) => any>(
+=======
+export function debounce<T extends (...args: unknown[]) => unknown>(
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout;
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
@@ -286,12 +302,20 @@ export function debounce<T extends (...args: any[]) => any>(
 }
 
 // Throttle utility for performance
+<<<<<<< HEAD
 export function throttle<T extends (...args: any[]) => any>(
+=======
+export function throttle<T extends (...args: unknown[]) => unknown>(
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
       func(...args);
@@ -302,6 +326,7 @@ export function throttle<T extends (...args: any[]) => any>(
 }
 
 // Memoization utility
+<<<<<<< HEAD
 export function memoize<T extends (...args: any[]) => any>(func: T): T {
   const cache = new Map();
   
@@ -312,6 +337,18 @@ export function memoize<T extends (...args: any[]) => any>(func: T): T {
       return cache.get(key);
     }
     
+=======
+export function memoize<T extends (...args: unknown[]) => unknown>(func: T): T {
+  const cache = new Map();
+
+  return ((...args: Parameters<T>) => {
+    const key = JSON.stringify(args);
+
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     const result = func(...args);
     cache.set(key, result);
     return result;
@@ -360,10 +397,17 @@ export class LazyLoader {
 // Performance monitoring hook
 export function usePerformanceMonitor(componentName: string) {
   const monitor = PerformanceMonitor.getInstance();
+<<<<<<< HEAD
   
   return {
     startRender: () => monitor.measureRender(componentName),
     measureAPI: (apiCall: string, startTime: number) => 
+=======
+
+  return {
+    startRender: () => monitor.measureRender(componentName),
+    measureAPI: (apiCall: string, startTime: number) =>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
       monitor.measureAPI(apiCall, startTime),
     getMetrics: () => monitor.getMetrics(),
     getMemoryUsage: () => monitor.getMemoryUsage()
@@ -390,7 +434,11 @@ export function useVirtualScroller(
   itemHeight: number,
   totalItems: number
 ) {
+<<<<<<< HEAD
   const [scroller] = useState(() => 
+=======
+  const [scroller] = useState(() =>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     new VirtualScroller(containerRef, itemHeight, totalItems)
   );
 

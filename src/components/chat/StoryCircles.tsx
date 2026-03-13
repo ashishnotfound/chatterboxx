@@ -15,6 +15,7 @@ interface StoryCirclesProps {
 export function StoryCircles({ users, stories, onUserClick, onAddStory, isStealthMode = false }: StoryCirclesProps) {
   console.log('📖 StoryCircles - received stories:', stories);
   console.log('📖 StoryCircles - received users:', users);
+<<<<<<< HEAD
   
   // Get users with stories
   const usersWithStories = users.filter(user => 
@@ -27,6 +28,20 @@ export function StoryCircles({ users, stories, onUserClick, onAddStory, isStealt
     <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 lg:-mx-0 lg:px-0">
       <motion.div 
         className="flex gap-4 lg:gap-6 py-2"
+=======
+
+  // Get users with stories
+  const usersWithStories = users.filter(user =>
+    stories.some(story => story.userId === user.id)
+  );
+
+  console.log('📖 StoryCircles - usersWithStories:', usersWithStories);
+
+  return (
+    <div className="overflow-x-auto overflow-y-visible scrollbar-hide -mx-4 px-4 lg:-mx-0 lg:px-0 flex-shrink-0">
+      <motion.div
+        className="flex gap-4 lg:gap-6 py-5"
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.1 }}
@@ -53,7 +68,11 @@ export function StoryCircles({ users, stories, onUserClick, onAddStory, isStealt
         {usersWithStories.map((user, index) => {
           const userStories = stories.filter(story => story.userId === user.id);
           const hasUnviewedStory = userStories.some(story => !story.isViewed);
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
           return (
             <motion.div
               key={user.id}
@@ -65,6 +84,7 @@ export function StoryCircles({ users, stories, onUserClick, onAddStory, isStealt
             >
               <div className="relative">
                 {/* Story ring */}
+<<<<<<< HEAD
                 <div className={`absolute inset-0 rounded-full border-2 ${
                   hasUnviewedStory 
                     ? 'border-primary' 
@@ -75,6 +95,17 @@ export function StoryCircles({ users, stories, onUserClick, onAddStory, isStealt
                   user={user} 
                   size="lg" 
                   isStory 
+=======
+                <div className={`absolute inset-0 rounded-full border-2 ${hasUnviewedStory
+                  ? 'border-primary'
+                  : 'border-muted-foreground/30'
+                  }`} />
+
+                <Avatar
+                  user={user}
+                  size="lg"
+                  isStory
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                   showOnlineStatus={false}
                 />
               </div>

@@ -291,4 +291,8 @@ export function EmojiPicker({ onSelect, onClose, isOpen, inputRef }: EmojiPicker
       )}
     </AnimatePresence>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)

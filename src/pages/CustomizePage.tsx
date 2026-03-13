@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { AppLayout } from '@/components/layout/AppLayout';
 import { ResponsiveLayout } from '@/components/layout/ResponsiveLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme, backgroundGradients, bubbleColorClasses, borderColorClasses } from '@/contexts/ThemeContext';
+=======
+import { cn } from '@/lib/utils';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { ResponsiveLayout } from '@/components/layout/ResponsiveLayout';
+import { useAuth } from '@/hooks/useAuth';
+import { useTheme } from '@/contexts/ThemeContextData';
+import { backgroundGradients, bubbleColorClasses, borderColorClasses } from '@/types/theme';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { toast } from 'sonner';
 import { ArrowLeft, Lock, Check, Palette, MessageSquare, Image, Save, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -23,7 +32,11 @@ const backgroundPresets = [
   { id: 'amber', color: 'from-amber-900 to-slate-900', label: 'Amber' },
   { id: 'violet', color: 'from-violet-900 to-slate-900', label: 'Violet' },
   { id: 'rose', color: 'from-rose-900 to-slate-900', label: 'Rose' },
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   // Premium gradient themes - all unlocked
   { id: 'sunset', color: 'from-orange-600 via-pink-600 to-purple-900', label: 'Sunset Gradient' },
   { id: 'ocean', color: 'from-cyan-600 via-blue-600 to-indigo-900', label: 'Ocean Gradient' },
@@ -53,7 +66,11 @@ const bubbleColors = [
   { id: 'rose', color: 'bg-rose-500', label: 'Rose' },
   { id: 'sky', color: 'bg-sky-500', label: 'Sky' },
   { id: 'fuchsia', color: 'bg-fuchsia-500', label: 'Fuchsia' },
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   // Premium gradients - all unlocked
   { id: 'sunset_gradient', color: 'bg-gradient-to-r from-orange-500 to-pink-500', label: 'Sunset' },
   { id: 'ocean_gradient', color: 'bg-gradient-to-r from-cyan-500 to-blue-500', label: 'Ocean' },
@@ -86,7 +103,11 @@ const borderColors = [
   { id: 'fuchsia', color: 'border-fuchsia-500', label: 'Fuchsia' },
   { id: 'white', color: 'border-white', label: 'White' },
   { id: 'silver', color: 'border-gray-400', label: 'Silver' },
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   // Premium gradient borders - all unlocked
   { id: 'rainbow', color: 'border-rainbow-gradient', label: 'Rainbow', isGradient: true },
   { id: 'sunset', color: 'border-sunset-gradient', label: 'Sunset', isGradient: true },
@@ -106,7 +127,11 @@ export default function CustomizePage() {
   const { profile, updateProfile } = useAuth();
   const { setBackground, setBubbleColor, setAvatarBorder } = useTheme();
   const isPro = profile?.subscription_tier === 'pro';
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
   const [selectedBg, setSelectedBg] = useState(profile?.theme_background || 'purple');
   const [selectedBubble, setSelectedBubble] = useState(profile?.theme_bubble_color || 'pink');
   const [selectedBorder, setSelectedBorder] = useState(profile?.theme_avatar_border || 'pink');
@@ -124,12 +149,20 @@ export default function CustomizePage() {
       setBubbleColor(profile.theme_bubble_color || 'pink');
       setAvatarBorder(profile.theme_avatar_border || 'pink');
     }
+<<<<<<< HEAD
   }, [profile]);
+=======
+  }, [profile, setBackground, setBubbleColor, setAvatarBorder]);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   const handleSelect = (type: string, id: string, isPremium?: boolean) => {
     // All themes are now unlocked - no Pro check needed
     setHasChanges(true);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     if (type === 'bg') {
       setSelectedBg(id);
       setBackground(id); // Instant preview
@@ -151,9 +184,15 @@ export default function CustomizePage() {
       theme_bubble_color: selectedBubble,
       theme_avatar_border: selectedBorder,
     });
+<<<<<<< HEAD
     
     setSaving(false);
     
+=======
+
+    setSaving(false);
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     if (error) {
       toast.error('Failed to save theme settings');
     } else {
@@ -165,6 +204,7 @@ export default function CustomizePage() {
   return (
     <ResponsiveLayout>
       <AppLayout>
+<<<<<<< HEAD
         <div className="flex-1 flex flex-col overflow-y-auto">
           {/* Mobile Header */}
           <motion.header 
@@ -173,6 +213,16 @@ export default function CustomizePage() {
             animate={{ y: 0, opacity: 1 }}
           >
             <button 
+=======
+        <div className="flex-1 flex flex-col overflow-y-auto no-scrollbar pb-20">
+          {/* Mobile Header */}
+          <motion.header
+            className="px-4 pt-6 pb-4 flex items-center gap-3 lg:hidden safe-area-pt"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+          >
+            <button
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               onClick={() => navigate(-1)}
               className="p-2 rounded-xl hover:bg-secondary/50 transition-colors"
             >
@@ -199,7 +249,12 @@ export default function CustomizePage() {
                 {(() => {
                   const gradientBorders = ['rainbow', 'sunset', 'ocean', 'galaxy', 'aurora', 'fire', 'black_white'];
                   const isGradient = gradientBorders.includes(selectedBorder);
+<<<<<<< HEAD
                   
+=======
+                  const isHex = selectedBorder.startsWith('#');
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                   if (isGradient) {
                     return (
                       <div className={`
@@ -211,6 +266,7 @@ export default function CustomizePage() {
                       </div>
                     );
                   }
+<<<<<<< HEAD
                   
                   return (
                     <div className={`
@@ -218,12 +274,33 @@ export default function CustomizePage() {
                       ${borderColorClasses[selectedBorder] || 'border-pink-500'} 
                       bg-secondary flex items-center justify-center
                     `}>
+=======
+
+                  return (
+                    <div
+                      className={cn(
+                        "w-14 h-14 lg:w-16 lg:h-16 rounded-full border-4 bg-secondary flex items-center justify-center",
+                        !isHex && (borderColorClasses[selectedBorder] || 'border-pink-500')
+                      )}
+                      style={{ borderColor: isHex ? selectedBorder : undefined }}
+                    >
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                       <span className="text-2xl">👤</span>
                     </div>
                   );
                 })()}
                 <div className="flex-1">
+<<<<<<< HEAD
                   <div className={`${bubbleColorClasses[selectedBubble]} rounded-2xl rounded-bl-sm px-4 py-2 max-w-[200px]`}>
+=======
+                  <div
+                    className={cn(
+                      "rounded-2xl rounded-bl-sm px-4 py-2 max-w-[200px]",
+                      !selectedBubble.startsWith('#') && (bubbleColorClasses[selectedBubble] || 'bg-pink-500')
+                    )}
+                    style={{ backgroundColor: selectedBubble.startsWith('#') ? selectedBubble : undefined }}
+                  >
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                     <p className="text-white text-sm">Hello! This is a preview</p>
                   </div>
                 </div>
@@ -241,6 +318,7 @@ export default function CustomizePage() {
                 <h2 className="font-medium text-foreground">Background Theme</h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+<<<<<<< HEAD
                 {backgroundPresets.map((preset) => (
                   <button
                     key={preset.id}
@@ -261,6 +339,59 @@ export default function CustomizePage() {
                     </span>
                   </button>
                 ))}
+=======
+                {backgroundPresets.map((preset) => {
+                  if (preset.id === 'custom') return null; // Handle custom separately
+                  return (
+                    <button
+                      key={preset.id}
+                      onClick={() => handleSelect('bg', preset.id)}
+                      className={`
+                        relative aspect-[3/4] rounded-2xl overflow-hidden border-2 transition-all
+                        ${selectedBg === preset.id ? 'border-primary ring-2 ring-primary/30' : 'border-transparent'}
+                      `}
+                    >
+                      <div className={`absolute inset-0 bg-gradient-to-b ${preset.color}`} />
+                      {selectedBg === preset.id && (
+                        <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                          <Check className="w-3 h-3 text-primary-foreground" />
+                        </div>
+                      )}
+                      <span className="absolute bottom-2 left-2 text-[10px] text-foreground/80 font-medium">
+                        {preset.label}
+                      </span>
+                    </button>
+                  );
+                })}
+
+                {/* Custom Color Box */}
+                <div
+                  className={`
+                    relative aspect-[3/4] rounded-2xl overflow-hidden border-2 transition-all group px-3 py-6 flex flex-col items-center justify-center gap-3
+                    ${selectedBg.startsWith('#') ? 'border-primary ring-2 ring-primary/30' : 'glass-card border-transparent'}
+                  `}
+                >
+                  <div
+                    className="w-12 h-12 rounded-full border-2 border-white/20 shadow-xl"
+                    style={{ background: selectedBg.startsWith('#') ? selectedBg : '#6366f1' }}
+                  />
+                  <div className="text-center">
+                    <p className="text-[11px] font-bold text-foreground">Custom Color</p>
+                    <p className="text-[9px] text-muted-foreground">Pick your vibe</p>
+                  </div>
+                  <input
+                    type="color"
+                    value={selectedBg.startsWith('#') ? selectedBg : '#6366f1'}
+                    onChange={(e) => handleSelect('bg', e.target.value)}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  />
+                  {selectedBg.startsWith('#') && (
+                    <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+                      <Check className="w-3 h-3 text-primary-foreground" />
+                    </div>
+                  )}
+                </div>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               </div>
             </motion.div>
 
@@ -275,6 +406,7 @@ export default function CustomizePage() {
                 <h2 className="font-medium text-foreground">Chat Bubble Color</h2>
               </div>
               <div className="flex flex-wrap gap-3">
+<<<<<<< HEAD
                 {bubbleColors.map((color) => (
                   <button
                     key={color.id}
@@ -289,6 +421,45 @@ export default function CustomizePage() {
                     )}
                   </button>
                 ))}
+=======
+                {bubbleColors.map((color) => {
+                  if (color.id === 'custom') return null;
+                  return (
+                    <button
+                      key={color.id}
+                      onClick={() => handleSelect('bubble', color.id)}
+                      className={`
+                        relative w-12 h-12 lg:w-14 lg:h-14 rounded-full ${color.color} border-2 transition-all
+                        ${selectedBubble === color.id ? 'border-foreground ring-2 ring-primary/30' : 'border-transparent'}
+                      `}
+                    >
+                      {selectedBubble === color.id && (
+                        <Check className="absolute inset-0 m-auto w-5 h-5 text-white" />
+                      )}
+                    </button>
+                  );
+                })}
+
+                {/* Custom Bubble Color */}
+                <div
+                  className={`
+                    relative w-12 h-12 lg:w-14 lg:h-14 rounded-full border-2 transition-all flex items-center justify-center
+                    ${selectedBubble.startsWith('#') ? 'border-foreground ring-2 ring-primary/30' : 'bg-secondary/50 border-transparent'}
+                  `}
+                  style={{ backgroundColor: selectedBubble.startsWith('#') ? selectedBubble : undefined }}
+                >
+                  {!selectedBubble.startsWith('#') && <Palette className="w-5 h-5 text-muted-foreground" />}
+                  <input
+                    type="color"
+                    value={selectedBubble.startsWith('#') ? selectedBubble : '#ec4899'}
+                    onChange={(e) => handleSelect('bubble', e.target.value)}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  />
+                  {selectedBubble.startsWith('#') && (
+                    <Check className="w-5 h-5 text-white" />
+                  )}
+                </div>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               </div>
             </motion.div>
 
@@ -304,8 +475,14 @@ export default function CustomizePage() {
               </div>
               <div className="flex flex-wrap gap-3">
                 {borderColors.map((color) => {
+<<<<<<< HEAD
                   const isGradient = color.isGradient || false;
                   
+=======
+                  if (color.id === 'monochrome' && borderColors.filter(c => c.id === 'monochrome').length > 1) return null; // Dedupe
+                  const isGradient = color.isGradient || false;
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                   if (isGradient) {
                     return (
                       <button
@@ -325,7 +502,11 @@ export default function CustomizePage() {
                       </button>
                     );
                   }
+<<<<<<< HEAD
                   
+=======
+
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
                   return (
                     <button
                       key={color.id}
@@ -342,6 +523,29 @@ export default function CustomizePage() {
                     </button>
                   );
                 })}
+<<<<<<< HEAD
+=======
+
+                {/* Custom Border Color */}
+                <div
+                  className={`
+                    relative w-12 h-12 lg:w-14 lg:h-14 rounded-full border-4 transition-all flex items-center justify-center bg-secondary
+                    ${selectedBorder.startsWith('#') ? 'ring-2 ring-primary/30 scale-110' : ''}
+                  `}
+                  style={{ borderColor: selectedBorder.startsWith('#') ? selectedBorder : undefined }}
+                >
+                  {!selectedBorder.startsWith('#') && <Palette className="w-5 h-5 text-muted-foreground" />}
+                  <input
+                    type="color"
+                    value={selectedBorder.startsWith('#') ? selectedBorder : '#ec4899'}
+                    onChange={(e) => handleSelect('border', e.target.value)}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  />
+                  {selectedBorder.startsWith('#') && (
+                    <Check className="w-5 h-5 text-foreground" />
+                  )}
+                </div>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
               </div>
             </motion.div>
 

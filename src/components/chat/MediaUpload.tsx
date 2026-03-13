@@ -1,8 +1,17 @@
+<<<<<<< HEAD
 import { useState, useRef } from 'react';
+=======
+import { useState, useRef, useEffect } from 'react';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 import { X, Upload, Image as ImageIcon, Video, File as FileIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+<<<<<<< HEAD
+=======
+import { useIsMobile } from '@/hooks/use-mobile';
+import { compressImage } from '@/utils/image';
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
 interface MediaUploadProps {
   onMediaSelect: (file: File, preview: string, type: 'image' | 'video' | 'file') => void;
@@ -25,6 +34,33 @@ export default function MediaUpload({
   const [uploading, setUploading] = useState(false);
   const [activeTab, setActiveTab] = useState<'image' | 'video' | 'file'>('image');
   const fileInputRef = useRef<HTMLInputElement>(null);
+<<<<<<< HEAD
+=======
+  const isMobile = useIsMobile();
+
+  // Handle mobile file selection from PremiumChatInput
+  useEffect(() => {
+    if (isMobile && (window as any).__selectedMobileFile) {
+      const file = (window as any).__selectedMobileFile;
+      // Detect file type
+      let detectedType: 'image' | 'video' | 'file' = 'file';
+      if (file.type.startsWith('image/')) {
+        detectedType = 'image';
+        setActiveTab('image');
+      } else if (file.type.startsWith('video/')) {
+        detectedType = 'video';
+        setActiveTab('video');
+      } else {
+        detectedType = 'file';
+        setActiveTab('file');
+      }
+      
+      handleFile(file, detectedType);
+      // Clear the stored file
+      delete (window as any).__selectedMobileFile;
+    }
+  }, [isMobile]);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
 
   const getAcceptedTypes = (type: 'image' | 'video' | 'file'): string[] => {
     switch (type) {
@@ -75,6 +111,7 @@ export default function MediaUpload({
     return true;
   };
 
+<<<<<<< HEAD
   const handleFile = (file: File, type: 'image' | 'video' | 'file') => {
     if (!validateFile(file, type)) return;
 
@@ -91,6 +128,54 @@ export default function MediaUpload({
     } else {
       // For files, we don't need a preview, just use a placeholder
       onMediaSelect(file, '', type);
+=======
+  const handleFile = async (file: File, type: 'image' | 'video' | 'file') => {
+    if (!validateFile(file, type)) return;
+
+    try {
+      setUploading(true);
+      let processedFile = file;
+
+      // Compress images if they're large
+      if (type === 'image' && file.size > 2 * 1024 * 1024) { // 2MB threshold
+        toast.info('Compressing large image...');
+        try {
+          processedFile = await compressImage(file, 1920, 1080, 0.8);
+          if (processedFile.size < file.size) {
+            toast.success(`Image compressed (${(processedFile.size / 1024).toFixed(1)}KB)`);
+          }
+        } catch (error) {
+          console.error('Compression failed:', error);
+          // Continue with original file if compression fails
+        }
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const preview = e.target?.result as string;
+        onMediaSelect(processedFile, preview, type);
+        setUploading(false);
+      };
+      
+      reader.onerror = () => {
+        toast.error('Failed to read file');
+        setUploading(false);
+      };
+      
+      if (type === 'image') {
+        reader.readAsDataURL(processedFile);
+      } else if (type === 'video') {
+        reader.readAsDataURL(processedFile);
+      } else {
+        // For files, we don't need a preview, just use a placeholder
+        onMediaSelect(processedFile, '', type);
+        setUploading(false);
+      }
+    } catch (error) {
+      console.error('File processing error:', error);
+      toast.error('Failed to process file');
+      setUploading(false);
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     }
   };
 

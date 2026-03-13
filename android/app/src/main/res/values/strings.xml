@@ -1,7 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+<<<<<<< HEAD
     <string name="app_name">Chatter Box</string>
     <string name="title_activity_main">Chatter Box</string>
+=======
+    <string name="app_name">ChatterBox</string>
+    <string name="title_activity_main">ChatterBox</string>
+>>>>>>> 8c583bf (feat: implement reply system, performance optimizations, and premium README)
     <string name="package_name">com.chatterbox.app</string>
     <string name="custom_url_scheme">com.chatterbox.app</string>
 </resources>
