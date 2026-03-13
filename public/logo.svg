@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="white"/>
+  <!-- Isometric Blocks Mapping -->
+  <!-- This SVG replicates the 5-block isometric cubic logo provided by the user -->
+  
+  <!-- Block 1: Bottom Horizontal -->
+  <path d="M140 370 L256 430 L372 370 L256 310 Z" fill="black"/>
+  <path d="M140 370 L140 430 L256 490 L256 430 Z" fill="black" fill-opacity="0.9"/>
+  <path d="M256 430 L256 490 L372 430 L372 370 Z" fill="black" fill-opacity="0.8"/>
+  
+  <!-- Block 2: Top Horizontal -->
+  <path d="M140 142 L256 202 L372 142 L256 82 Z" fill="black"/>
+  <path d="M140 142 L140 202 L256 262 L256 202 Z" fill="black" fill-opacity="0.9"/>
+  <path d="M256 202 L256 262 L372 202 L372 142 Z" fill="black" fill-opacity="0.8"/>
+  
+  <!-- Block 3: Right Vertical -->
+  <path d="M300 230 L350 255 L400 230 L350 205 Z" fill="black"/>
+  <path d="M300 230 L300 350 L350 375 L350 255 Z" fill="black" fill-opacity="0.9"/>
+  <path d="M350 255 L350 375 L400 350 L400 230 Z" fill="black" fill-opacity="0.8"/>
+  
+  <!-- Block 4: Left Vertical -->
+  <path d="M112 230 L162 255 L212 230 L162 205 Z" fill="black"/>
+  <path d="M112 230 L112 350 L162 375 L162 255 Z" fill="black" fill-opacity="0.9"/>
+  <path d="M162 255 L162 375 L212 350 L212 230 Z" fill="black" fill-opacity="0.8"/>
+
+  <!-- Block 5: Center Cube -->
+  <path d="M226 256 L256 271 L286 256 L256 241 Z" fill="black"/>
+  <path d="M226 256 L226 286 L256 301 L256 271 Z" fill="black" fill-opacity="0.9"/>
+  <path d="M256 271 L256 301 L286 286 L286 256 Z" fill="black" fill-opacity="0.8"/>
+
+  <!-- Stroke/Outline for clarity -->
+  <path d="M140 370 L256 430 L372 370 L256 310 Z M140 142 L256 202 L372 142 L256 82 Z M300 230 L350 255 L400 230 L350 205 Z M112 230 L162 255 L212 230 L162 205 Z M226 256 L256 271 L286 256 L256 241 Z" stroke="white" stroke-width="1.5"/>
+</svg>

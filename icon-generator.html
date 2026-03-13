@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatterbox Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        #preview {
+            margin: 20px 0;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Chatterbox Icon Generator</h1>
+        <div class="info">
+            <strong>Instructions:</strong>
+            <ol>
+                <li>Click "Generate All Icons" to create PNG files in all required sizes</li>
+                <li>Each icon will download automatically</li>
+                <li>Place the downloaded icons in the corresponding Android mipmap folders</li>
+            </ol>
+        </div>
+        
+        <button onclick="generateAllIcons()">Generate All Icons</button>
+        <button onclick="generateSingleIcon(512)">Generate 512x512 Preview</button>
+        
+        <div id="preview"></div>
+    </div>
+
+    <script>
+        const iconSizes = [
+            { name: 'mipmap-mdpi', size: 48 },
+            { name: 'mipmap-hdpi', size: 72 },
+            { name: 'mipmap-xhdpi', size: 96 },
+            { name: 'mipmap-xxhdpi', size: 144 },
+            { name: 'mipmap-xxxhdpi', size: 192 }
+        ];
+
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = size;
+            canvas.height = size;
+            
+            // White background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Scale factor
+            const scale = size / 512;
+            ctx.save();
+            ctx.translate(size / 2, size / 2);
+            ctx.scale(scale, scale);
+            
+            // Draw isometric cubes
+            const cubes = [
+                { x: 0, y: 0 },      // center
+                { x: -70, y: -40 },  // top left
+                { x: 70, y: -40 },   // top right
+                { x: -70, y: 40 },   // bottom left
+                { x: 70, y: 40 }     // bottom right
+            ];
+            
+            cubes.forEach(cube => {
+                drawCube(ctx, cube.x, cube.y);
+            });
+            
+            ctx.restore();
+        }
+        
+        function drawCube(ctx, offsetX, offsetY) {
+            ctx.save();
+            ctx.translate(offsetX, offsetY);
+            
+            // Main hexagon body
+            ctx.beginPath();
+            ctx.moveTo(0, -40);
+            ctx.lineTo(35, -20);
+            ctx.lineTo(35, 20);
+            ctx.lineTo(0, 40);
+            ctx.lineTo(-35, 20);
+            ctx.lineTo(-35, -20);
+            ctx.closePath();
+            ctx.fillStyle = 'black';
+            ctx.fill();
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Top right face
+            ctx.beginPath();
+            ctx.moveTo(0, -40);
+            ctx.lineTo(35, -20);
+            ctx.lineTo(0, 0);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fill();
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Top left face
+            ctx.beginPath();
+            ctx.moveTo(0, -40);
+            ctx.lineTo(-35, -20);
+            ctx.lineTo(0, 0);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fill();
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            ctx.restore();
+        }
+        
+        function downloadCanvas(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function generateSingleIcon(size) {
+            const canvas = document.createElement('canvas');
+            drawIcon(canvas, size);
+            
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '<h3>Preview:</h3>';
+            preview.appendChild(canvas);
+            
+            downloadCanvas(canvas, `ic_launcher_${size}.png`);
+        }
+        
+        function generateAllIcons() {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '<h3>Generating icons...</h3>';
+            
+            iconSizes.forEach((iconSize, index) => {
+                setTimeout(() => {
+                    const canvas = document.createElement('canvas');
+                    drawIcon(canvas, iconSize.size);
+                    
+                    // Download three versions for each size
+                    downloadCanvas(canvas, `ic_launcher_${iconSize.name}.png`);
+                    downloadCanvas(canvas, `ic_launcher_foreground_${iconSize.name}.png`);
+                    downloadCanvas(canvas, `ic_launcher_round_${iconSize.name}.png`);
+                    
+                    if (index === iconSizes.length - 1) {
+                        preview.innerHTML += '<p style="color: green;">✓ All icons generated and downloaded!</p>';
+                        preview.innerHTML += '<p>Now copy the files to their respective folders in:<br><code>android/app/src/main/res/</code></p>';
+                    }
+                }, index * 500);
+            });
+        }
+    </script>
+</body>
+</html>
